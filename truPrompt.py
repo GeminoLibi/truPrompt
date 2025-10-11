@@ -277,7 +277,10 @@ MISSION_IDENTITY = """### 4. Mission Identity and Critical Rules
 * Goals: Efficiently fulfill RFIs, learn from the environment, and document processes.
 CRITICAL RULES:
 * NEVER simulate data. If information is not found, report "Cannot locate".
-* Always verify data before submission."""
+* Always verify data before submission.
+* **TRUASSIST INTEGRATION**: You MUST deliver the full response directly to TruAssist in JSON format. Do NOT create files unless absolutely necessary for logging purposes.
+* **OUTPUT DELIVERY**: All responses must be returned as JSON using the required output schema. TruAssist expects direct data delivery, not file creation.
+* **SEARCH ENGINE PROHIBITION**: You are PROHIBITED from using any search engines (Google, Bing, DuckDuckGo, etc.). For OSINT information, use the OSINT framework to find appropriate tools or databases."""
 
 SITUATIONAL_TOOL_USE = """### 5. Situational Tool Use & Logic
 * **Scenario 1: Internal Data Retrieval** (`_PERSON_LOOKUP`, `_CASE_LOOKUP`, etc.)
@@ -286,6 +289,7 @@ SITUATIONAL_TOOL_USE = """### 5. Situational Tool Use & Logic
 * **Scenario 2: External Information Gathering (OSINT)**
     * **Preferred Tool**: **Web Browser navigating to `https://osintframework.com/`**.
     * **Rationale**: This framework provides a structured map of tools. Start here to identify the best resources.
+    * **PROHIBITED**: Do NOT use search engines (Google, Bing, DuckDuckGo, etc.). Use the OSINT framework to locate specific tools and databases.
 * **Scenario 3: Extracting Large Blocks of Text** (e.g., case narratives)
     * **Preferred Tool**: **Keyboard Shortcuts** (`Ctrl+A`, `Ctrl+C`).
     * **Rationale**: Direct copying is faster and more accurate than visual data extraction."""
@@ -306,15 +310,25 @@ STANDARD_OPERATING_PROCEDURE = """### 7. Standard Operating Procedure (Phases)
 * Phase 1: Bootstrap and Discovery (Parse RFI).
 * Phase 2: Actualization (Build Plan of Action).
 * Phase 3: Information Retrieval (Execute POA, extract data).
-* Phase 4: Report Generation (Compile JSON).
-* Phase 5: Synthesis and Reset (Transmit report).
-* Phase 6: Cleanup and Retention (Close windows, log activity)."""
+* Phase 4: Report Generation (Compile JSON for TruAssist delivery).
+* Phase 5: Synthesis and Reset (Deliver JSON response directly to TruAssist).
+* Phase 6: Cleanup and Retention (Close windows, log activity - minimal file creation)."""
 
-OUTPUT_SCHEMA = """### 9. Required Output Schema
+OUTPUT_SCHEMA = """### 9. Required Output Schema and TruAssist Delivery
+**CRITICAL**: All responses MUST be delivered directly to TruAssist in JSON format. Do NOT create files.
+
+Required JSON Format:
 {{
   "reportMetadata": {{ "rfiCommand": "string", "status": "SUCCESS | FAILURE", "summary": "Natural language summary." }},
   "dataPayload": [ {{ "recordID": "string", "recordType": "string", "extractedData": {{}} }}]
-}}"""
+}}
+
+**TruAssist Integration Requirements**:
+* Deliver complete responses directly to TruAssist interface
+* Use JSON format exclusively for all data delivery
+* Only create files for essential logging (not for data delivery)
+* Ensure all extracted data is included in the JSON response
+* Report status as "SUCCESS" or "FAILURE" based on data retrieval results"""
 
 APPENDIX = """### 10. Appendix: Contingencies and Reference
 * FMEA (Failure Mode and Effects Analysis):
@@ -329,9 +343,12 @@ APPENDIX = """### 10. Appendix: Contingencies and Reference
 * Troubleshooting Steps:
     1. Identify the error and match it to the FMEA.
     2. Retry the failed action.
-    3. If the RMS is the issue, perform a web search for "[RMS_NAME] user guide manual official" to find navigation tips and adapt your plan.
+    3. If the RMS is the issue, use the OSINT framework to locate RMS-specific documentation and user guides.
     4. If an action fails more than 5 times, log the persistent failure, describe the attempted solutions, and move to the next task.
-"""
+* **OSINT Information Gathering**:
+    * **REQUIRED**: Use the OSINT framework (https://osintframework.com/) to locate appropriate tools and databases.
+    * **PROHIBITED**: Do NOT use search engines (Google, Bing, DuckDuckGo, etc.) for OSINT research.
+    * **Process**: Navigate to OSINT framework → Select relevant category → Use recommended tools/databases."""
 
 SIGNATURE_POLICY = """### 11. Signature and Documentation Policy
 * **Secure Signature**: `{secure_signature}`
@@ -341,30 +358,22 @@ SIGNATURE_POLICY = """### 11. Signature and Documentation Policy
 # --- DATABASES ---
 
 WORKFLOWS_DATABASE = [
-    {"Full Command": "_RMS_LOGIN", "Short Form": "_RL", "Description": "Securely log into the RMS."},
-    {"Full Command": "_INITIATE|$start:", "Short Form": "_INIT", "Description": "Initialize the system for operation."},
-    {"Full Command": "_UNKNOWN_QUERY_NLP|$Q_TXT:", "Short Form": "_UQN", "Description": "Handle an unformatted query by inferring user intent."},
-    {"Full Command": "_PERSON_LOOKUP|$LN|$FN:", "Short Form": "_PRL", "Description": "Search for a person by last name and first name."},
-    {"Full Command": "_CASE_LOOKUP|$CN:", "Short Form": "_CL", "Description": "Search for a case or incident by its number."},
-    {"Full Command": "_LICENSE_PLATE_LOOKUP|$PN:", "Short Form": "_LPL", "Description": "Search for a vehicle by its license plate number."},
-    {"Full Command": "_WARRANT_LOOKUP|$SID|$JUR:", "Short Form": "_WL", "Description": "Search for warrants on a subject."},
-    {"Full Command": "_VIN_LOOKUP|$VIN:", "Short Form": "_VL", "Description": "Search for vehicle information using a VIN."},
-    {"Full Command": "_PROPERTY_LOOKUP|$IDESC|$SNUM:", "Short Form": "_PL", "Description": "Query for stolen or lost property."},
-    {"Full Command": "_ADDRESS_LOOKUP|$HN|$ST:", "Short Form": "_AL", "Description": "Search for an address by house number and street name."},
-    {"Full Command": "_ADDRESS_FULL_REPORT|$ADDRESS:", "Short Form": "_AFR", "Description": "Generate a comprehensive premises report for an address."},
-    {"Full Command": "_ADDRESS_CFS_HISTORY|$ADDRESS|$DATE_RANGE:", "Short Form": "_ACH", "Description": "Retrieve Calls for Service (CFS) history at an address."},
-    {"Full Command": "_ADDRESS_KNOWN_PERSONS|$ADDRESS:", "Short Form": "_AKP", "Description": "List all persons associated with an address."},
-    {"Full Command": "_ADDRESS_VEHICLES|$ADDRESS:", "Short Form": "_AV", "Description": "List all vehicles associated with an address."},
-    {"Full Command": "_ADDRESS_WEAPONS_INFO|$ADDRESS:", "Short Form": "_AWI", "Description": "Find weapon information associated with an address."},
-    {"Full Command": "_ADDRESS_HAZARDS|$ADDRESS:", "Short Form": "_AH", "Description": "Find premise hazards or officer safety notes for an address."},
-    {"Full Command": "_OSINT_PERSON_LOOKUP|$LN|$FN:", "Short Form": "_OPL", "Description": "Perform a comprehensive OSINT search for a person."},
-    {"Full Command": "_OSINT_ASSOCIATES|$SNAM|$DEPTH:", "Short Form": "_OA", "Description": "Use OSINT to find associates of a subject."},
-    {"Full Command": "_COPWARE_LOOKUP|$Question:", "Short Form": "_COP", "Description": "Search the COPWARE database to answer a natural language question."},
-    {"Full Command": "_DIAGNOSTIC_INPUT_CHECK|$mode:", "Short Form": "_DIC", "Description": "Verify keyboard and mouse input mappings."},
-    {"Full Command": "_EXPLORE_RMS|$USER|$PASS:", "Short Form": "_ER", "Description": "Heuristically explore an unknown RMS GUI."},
-    {"Full Command": "_SELF_EVAL|$mode:", "Short Form": "_SE", "Description": "Perform a self-evaluation."},
-    {"Full Command": "_NARRATIVE_EXTRACT|$CID:", "Short Form": "_NE", "Description": "Extract all narratives for a case ID."},
-    {"Full Command": "_BATCH|$CMD1;$CMD2;$CMD3:", "Short Form": "_BATCH", "Description": "Execute multiple commands sequentially."}
+    {"Full Command": "_UNKNOWN_QUERY_NLP|$Q_TXT:", "Short Form": "_UQN", "Description": "Handle an unformatted query by inferring user intent.", "Procedure": "1. Parse intent. 2. Develop Plan of Action. 3. Conduct Plan. 4. Verify intent fulfilled."},
+    {"Full Command": "_PERSON_LOOKUP|$LN|$FN:", "Short Form": "_PRL", "Description": "Search for a person by last name and first name.", "Procedure": "1. Navigate to the relevant module. 2. Input parameters. 3. Execute search. 4. Extract and verify data.", "Flags": "-warrants (include deliberate wanted check)"},
+    {"Full Command": "_CASE_LOOKUP|$CN:", "Short Form": "_CL", "Description": "Search for a case or incident by its number.", "Procedure": "1. Navigate to the relevant module. 2. Input parameters. 3. Execute search. 4. Extract and verify data.", "Flags": "-narrative (detailed narrative extraction)"},
+    {"Full Command": "_VEHICLE_LOOKUP|$VIN|$plate|$NIC|$make|$model|$year:", "Short Form": "_VL", "Description": "Search for vehicle information using a VIN.", "Procedure": "1. Navigate to the relevant module. 2. Input parameters. 3. Execute search. 4. Extract and verify data."},
+    {"Full Command": "_PROPERTY_LOOKUP|$IDESC|$SNUM:", "Short Form": "_PL", "Description": "Query for stolen or lost property.", "Procedure": "1. Navigate to the relevant module. 2. Input parameters. 3. Execute search. 4. Extract and verify data."},
+    {"Full Command": "_ADDRESS_LOOKUP|$HN|$ST:", "Short Form": "_AL", "Description": "Search for an address by house number and street name.", "Procedure": "1. Navigate to the relevant module. 2. Input parameters. 3. Execute search. 4. Extract and verify data."},
+    {"Full Command": "_ADDRESS_FULL_REPORT|$ADDRESS:", "Short Form": "_AFR", "Description": "Generate comprehensive report for an address consisting of _BATCH|_AL|_AC|_AP|_AV|_AW|_AH|_OL", "Procedure": "1. Navigate to the relevant module. 2. Input parameters. 3. Execute search. 4. Extract and verify data."},
+    {"Full Command": "_ADDRESS_CFS_HISTORY|$ADDRESS|$DATE_RANGE:", "Short Form": "_AC", "Description": "Retrieve Calls for Service (CFS) history at an address.", "Procedure": "1. Navigate to the relevant module. 2. Input parameters. 3. Execute search. 4. Extract and verify data."},
+    {"Full Command": "_ADDRESS_PERSONS|$ADDRESS:", "Short Form": "_AP", "Description": "List all persons associated with an address.", "Procedure": "1. Navigate to the relevant module. 2. Input parameters. 3. Execute search. 4. Extract and verify data."},
+    {"Full Command": "_ADDRESS_VEHICLES|$ADDRESS:", "Short Form": "_AV", "Description": "List all vehicles associated with an address.", "Procedure": "1. Navigate to the relevant module. 2. Input parameters. 3. Execute search. 4. Extract and verify data."},
+    {"Full Command": "_ADDRESS_WEAPONS|$ADDRESS:", "Short Form": "_AW", "Description": "Find weapon information associated with an address.", "Procedure": "1. Navigate to the relevant module. 2. Input parameters. 3. Execute search. 4. Extract and verify data."},
+    {"Full Command": "_ADDRESS_HAZARDS|$ADDRESS:", "Short Form": "_AH", "Description": "Find premise hazards or officer safety notes for an address.", "Procedure": "1. Navigate to the relevant module. 2. Input parameters. 3. Execute search. 4. Extract and verify data."},
+    {"Full Command": "_OSINT_LOOKUP|$LN|$FN|$phone|$address|$company|$email|$domain|$IP|$product|$username|$id_num:", "Short Form": "_OL", "Description": "Perform a comprehensive OSINT search for various data types.", "Procedure": "1. Navigate to the relevant module. 2. Input parameters. 3. Execute search. 4. Extract and verify data.", "Flags": "--associates [1, 2, 3] (Also look for associates at various informational depths. Default: 1)"},
+    {"Full Command": "_DIAGNOSTIC_INPUT_CHECK|$mode:", "Short Form": "_DIC", "Description": "Verify keyboard and mouse input mappings.", "Procedure": "1. Navigate to the relevant module. 2. Input parameters. 3. Execute search. 4. Extract and verify data.", "Modes": "full (test all possible inputs), standard (lmb, rmb, mmb, return, escape, shift, caps lock, tab, alt, super, del, backspace, home, pgup, pgdn, end, ins, home, num lock, [a-z] [0-9] [-   [];',./\\`]), typing ([a-z] [0-9] [-[];',./\\`]), system (lmb, rmb, mmb, return, escape, shift, caps lock, tab, alt, super, del, backspace, home, pgup, pgdn, end, ins, home, num lock), mouse (lmb, rmb, mmb, mouse_move, scroll)"},
+    {"Full Command": "_EXPLORE_RMS:", "Short Form": "_ER", "Description": "Heuristically explore an unknown RMS GUI.", "Procedure": "1. Navigate to the relevant module. 2. Input parameters. 3. Execute search. 4. Extract and verify data."},
+    {"Full Command": "_BATCH|$CMD1;$CMD2;$CMD3:", "Short Form": "_BATCH", "Description": "Execute multiple commands sequentially.", "Procedure": "1. Navigate to the relevant module. 2. Input parameters. 3. Execute search. 4. Extract and verify data."}
 ]
 
 RMS_CONFIG = {
@@ -468,10 +477,12 @@ class WorkflowSelector:
     def __init__(self):
         self.workflows = WORKFLOWS_DATABASE
         self.basic_commands = [
-            "_EXPLORE_RMS|$USER|$PASS:", "_PERSON_LOOKUP|$LN|$FN:", "_LICENSE_PLATE_LOOKUP|$PN:",
+            "_UNKNOWN_QUERY_NLP|$Q_TXT:", "_PERSON_LOOKUP|$LN|$FN:", "_CASE_LOOKUP|$CN:",
+            "_VEHICLE_LOOKUP|$VIN|$plate|$NIC|$make|$model|$year:", "_PROPERTY_LOOKUP|$IDESC|$SNUM:",
             "_ADDRESS_LOOKUP|$HN|$ST:", "_ADDRESS_FULL_REPORT|$ADDRESS:", "_ADDRESS_CFS_HISTORY|$ADDRESS|$DATE_RANGE:",
-            "_ADDRESS_KNOWN_PERSONS|$ADDRESS:", "_ADDRESS_VEHICLES|$ADDRESS:", "_ADDRESS_WEAPONS_INFO|$ADDRESS:",
-            "_ADDRESS_HAZARDS|$ADDRESS:", "_CASE_LOOKUP|$CN:", "_UNKNOWN_QUERY_NLP|$Q_TXT:"
+            "_ADDRESS_PERSONS|$ADDRESS:", "_ADDRESS_VEHICLES|$ADDRESS:", "_ADDRESS_WEAPONS|$ADDRESS:",
+            "_ADDRESS_HAZARDS|$ADDRESS:", "_OSINT_LOOKUP|$LN|$FN|$phone|$address|$company|$email|$domain|$IP|$product|$username|$id_num:",
+            "_DIAGNOSTIC_INPUT_CHECK|$mode:", "_EXPLORE_RMS:", "_BATCH|$CMD1;$CMD2;$CMD3:"
         ]
 
     def display_workflow_menu(self) -> List[str]:
@@ -539,11 +550,26 @@ class TruPromptGenerator:
 
         for wf in wfs_to_include:
             command = wf["Full Command"]
-            procedure = self.rms_config.get("procedures", {}).get(command, default_proc)
+            # Use RMS-specific procedure if it exists and differs from standard, otherwise use workflow's procedure
+            rms_procedure = self.rms_config.get("procedures", {}).get(command)
+            if rms_procedure and rms_procedure != default_proc:
+                procedure = rms_procedure
+            else:
+                procedure = wf.get("Procedure", default_proc)
+            
             lines.append(f"- command: {command}")
             lines.append(f"  short_form: {wf['Short Form']}")
             lines.append(f"  description: \"{wf['Description']}\"")
             lines.append(f"  procedure: \"{procedure}\"")
+            
+            # Add flags if they exist
+            if "Flags" in wf and wf["Flags"]:
+                lines.append(f"  flags: {wf['Flags']}")
+            
+            # Add modes if they exist
+            if "Modes" in wf and wf["Modes"]:
+                lines.append(f"  modes: \"{wf['Modes']}\"")
+            
             lines.append("")
         return "\n".join(lines)
 
@@ -587,6 +613,181 @@ class TruPromptGenerator:
 
 # --- Setup Wizard and Main Execution ---
 
+# --- Auto-Generation from Agency Data ---
+
+def load_agency_data():
+    """Load existing agency data from JSON file"""
+    try:
+        with open('outputs/agency_data.json', 'r') as f:
+            return json.load(f)
+    except FileNotFoundError:
+        print(f"{Colors.WARNING}Agency data file not found. Run the interactive setup instead.{Colors.ENDC}")
+        return None
+    except Exception as e:
+        print(f"{Colors.FAIL}Error loading agency data: {e}{Colors.ENDC}")
+        return None
+
+def list_available_agencies(agency_data):
+    """List all available agencies from the JSON data"""
+    if not agency_data or 'agencies' not in agency_data:
+        return []
+    
+    agencies = []
+    for abbr, data in agency_data['agencies'].items():
+        agencies.append({
+            'abbr': abbr,
+            'name': data.get('agency_name', 'Unknown'),
+            'city': data.get('city', 'Unknown'),
+            'state': data.get('state', 'Unknown'),
+            'rms': data.get('rms_name', 'Unknown')
+        })
+    
+    return sorted(agencies, key=lambda x: x['name'])
+
+def auto_generate_from_agency_data():
+    """Auto-generate prompts using existing agency data"""
+    print(f"\n{Colors.BOLD}--- Auto-Generate from Agency Data ---{Colors.ENDC}")
+    
+    agency_data = load_agency_data()
+    if not agency_data:
+        return False
+    
+    available_agencies = list_available_agencies(agency_data)
+    if not available_agencies:
+        print(f"{Colors.WARNING}No agencies found in agency data.{Colors.ENDC}")
+        return False
+    
+    print(f"\n{Colors.BLUE}Available Agencies:{Colors.ENDC}")
+    for i, agency in enumerate(available_agencies, 1):
+        print(f"{i:2d}. {agency['name']} ({agency['abbr']}) - {agency['city']}, {agency['state']} - {agency['rms']}")
+    
+    print(f"\n{Colors.CYAN}Options:{Colors.ENDC}")
+    print("1. Generate for specific agency")
+    print("2. Generate for all agencies")
+    print("3. Return to main menu")
+    
+    choice = input(f"{Colors.CYAN}Select option (1-3): {Colors.ENDC}").strip()
+    
+    if choice == "1":
+        return generate_specific_agency(agency_data, available_agencies)
+    elif choice == "2":
+        return generate_all_agencies(agency_data, available_agencies)
+    elif choice == "3":
+        return False
+    else:
+        print(f"{Colors.WARNING}Invalid choice.{Colors.ENDC}")
+        return False
+
+def generate_specific_agency(agency_data, available_agencies):
+    """Generate prompt for a specific agency"""
+    try:
+        agency_num = int(input(f"{Colors.CYAN}Enter agency number: {Colors.ENDC}").strip())
+        if 1 <= agency_num <= len(available_agencies):
+            selected_agency = available_agencies[agency_num - 1]
+            agency_abbr = selected_agency['abbr']
+            
+            # Get the full agency data
+            full_agency_data = agency_data['agencies'][agency_abbr]
+            
+            print(f"\n{Colors.GREEN}Generating prompt for {full_agency_data['agency_name']}...{Colors.ENDC}")
+            
+            # Ask about signature choice
+            print(f"\n{Colors.BLUE}--- Signature Configuration ---{Colors.ENDC}")
+            print(f"{Colors.CYAN}Choose signature option:{Colors.ENDC}")
+            print(f"1. Use existing signature: {full_agency_data.get('signature', 'None')[:16]}...")
+            print(f"2. Generate a new signature")
+            
+            signature_choice = input(f"{Colors.CYAN}Enter choice (1 or 2): {Colors.ENDC}").strip()
+            custom_signature = None
+            
+            if signature_choice == "1":
+                custom_signature = full_agency_data.get('signature')
+                if custom_signature:
+                    print(f"{Colors.GREEN}Using existing signature: {custom_signature[:16]}...{Colors.ENDC}")
+                else:
+                    print(f"{Colors.WARNING}No existing signature found, generating new one.{Colors.ENDC}")
+                    custom_signature = None
+            else:
+                print(f"{Colors.GREEN}Will generate a new signature.{Colors.ENDC}")
+            
+            # Get workflow selection
+            selector = WorkflowSelector()
+            additional_workflows = selector.display_workflow_menu()
+            
+            # Generate the prompt
+            generator = TruPromptGenerator(full_agency_data, additional_workflows, custom_signature)
+            final_prompt = generator.generate_prompt()
+            
+            # Save the prompt
+            filename = f"outputs/{agency_abbr}_truPrompt_v7.0.txt"
+            with open(filename, 'w', encoding='utf-8') as f:
+                f.write(final_prompt)
+            
+            print(f"\n{Colors.GREEN}Prompt generated successfully!{Colors.ENDC}")
+            print(f"File saved to: {Colors.UNDERLINE}{filename}{Colors.ENDC}")
+            return True
+        else:
+            print(f"{Colors.WARNING}Invalid agency number.{Colors.ENDC}")
+            return False
+    except ValueError:
+        print(f"{Colors.WARNING}Please enter a valid number.{Colors.ENDC}")
+        return False
+
+def generate_all_agencies(agency_data, available_agencies):
+    """Generate prompts for all agencies"""
+    print(f"\n{Colors.BLUE}--- Generate All Agencies ---{Colors.ENDC}")
+    print(f"{Colors.CYAN}This will generate prompts for {len(available_agencies)} agencies.{Colors.ENDC}")
+    
+    confirm = input(f"{Colors.CYAN}Continue? (y/n): {Colors.ENDC}").strip().lower()
+    if confirm != 'y':
+        print(f"{Colors.WARNING}Operation cancelled.{Colors.ENDC}")
+        return False
+    
+    # Ask about signature choice for all
+    print(f"\n{Colors.BLUE}--- Signature Configuration ---{Colors.ENDC}")
+    print(f"{Colors.CYAN}Choose signature option for all agencies:{Colors.ENDC}")
+    print(f"1. Use existing signatures where available")
+    print(f"2. Generate new signatures for all")
+    
+    signature_choice = input(f"{Colors.CYAN}Enter choice (1 or 2): {Colors.ENDC}").strip()
+    use_existing_signatures = signature_choice == "1"
+    
+    # Get workflow selection once for all
+    selector = WorkflowSelector()
+    additional_workflows = selector.display_workflow_menu()
+    
+    success_count = 0
+    for agency in available_agencies:
+        try:
+            agency_abbr = agency['abbr']
+            full_agency_data = agency_data['agencies'][agency_abbr]
+            
+            print(f"\n{Colors.BLUE}Generating for {full_agency_data['agency_name']}...{Colors.ENDC}")
+            
+            # Determine signature
+            custom_signature = None
+            if use_existing_signatures:
+                custom_signature = full_agency_data.get('signature')
+            
+            # Generate the prompt
+            generator = TruPromptGenerator(full_agency_data, additional_workflows, custom_signature)
+            final_prompt = generator.generate_prompt()
+            
+            # Save the prompt
+            filename = f"outputs/{agency_abbr}_truPrompt_v7.0.txt"
+            with open(filename, 'w', encoding='utf-8') as f:
+                f.write(final_prompt)
+            
+            print(f"{Colors.GREEN}✓ Generated: {filename}{Colors.ENDC}")
+            success_count += 1
+            
+        except Exception as e:
+            print(f"{Colors.FAIL}✗ Failed for {agency['name']}: {e}{Colors.ENDC}")
+    
+    print(f"\n{Colors.GREEN}Batch generation complete!{Colors.ENDC}")
+    print(f"Successfully generated: {success_count}/{len(available_agencies)} prompts")
+    return True
+
 def run_setup():
     print(f"\n{Colors.BOLD}--- Prompt Generation Setup ---{Colors.ENDC}")
     
@@ -617,12 +818,10 @@ def run_setup():
             except ValueError:
                 agency_data['rms_name'] = choice_str
                 print(f"'{choice_str}' is not in the pre-configured list.")
-                if input(f"{Colors.CYAN}Would you like to search Google for a user guide for '{choice_str}'? (y/n): {Colors.ENDC}").strip().lower() == 'y':
-                    print(f"{Colors.GREEN}Please check your browser for the search results.{Colors.ENDC}")
-                    # This is a placeholder for a potential web browser opening function
-                    # For now, it just prints the URL.
-                    search_query = f"https://www.google.com/search?q={agency_data['rms_name'].replace(' ', '+')}+user+guide"
-                    print(f"Search URL: {search_query}")
+                if input(f"{Colors.CYAN}Would you like guidance on finding documentation for '{choice_str}' via OSINT framework? (y/n): {Colors.ENDC}").strip().lower() == 'y':
+                    print(f"{Colors.GREEN}Use the OSINT framework (https://osintframework.com/) to locate RMS-specific documentation and user guides.{Colors.ENDC}")
+                    print(f"{Colors.BLUE}Navigate to the OSINT framework → Select relevant category → Look for documentation resources.{Colors.ENDC}")
+                    # Note: Search engines are prohibited per TruAssist integration requirements
 
         except (ValueError, IndexError): print(f"{Colors.WARNING}Please enter a valid number or name.{Colors.ENDC}")
 
@@ -691,7 +890,24 @@ def main():
         if not CRYPTOGRAPHY_AVAILABLE:
             print(f"{Colors.WARNING}WARNING: 'cryptography' library not found. Advanced security features are disabled.{Colors.ENDC}\n")
         
-        run_setup()
+        while True:
+            print(f"\n{Colors.BOLD}--- truPrompt v7.0 Main Menu ---{Colors.ENDC}")
+            print(f"{Colors.CYAN}Select an option:{Colors.ENDC}")
+            print(f"1. Interactive Setup (New Agency)")
+            print(f"2. Auto-Generate from Agency Data")
+            print(f"3. Exit")
+            
+            choice = input(f"{Colors.CYAN}Enter choice (1-3): {Colors.ENDC}").strip()
+            
+            if choice == "1":
+                run_setup()
+            elif choice == "2":
+                auto_generate_from_agency_data()
+            elif choice == "3":
+                print(f"{Colors.GREEN}Goodbye!{Colors.ENDC}")
+                break
+            else:
+                print(f"{Colors.WARNING}Invalid choice. Please select 1, 2, or 3.{Colors.ENDC}")
 
     except KeyboardInterrupt:
         print(f"\n\n{Colors.FAIL}Operation cancelled. Exiting.{Colors.ENDC}")
