@@ -36,11 +36,10 @@ class Colors:
 ASCII_BANNER = """
 ================================================================================
 |                                                                            |
-|                        truPrompt v6.9 (Final)                              |
+|                        truPrompt v7.0                                      |
 |                                                                            |
 ================================================================================
 > > > Standardized Agent Prompt Generator <<<
-[*] Unified Setup [*] Selectable Workflows [*] Detailed RMS Nuance
 "{}"
 ================================================================================
 """
@@ -48,7 +47,203 @@ ASCII_BANNER = """
 MOTIVATIONAL_QUOTES = [
     "The best way to predict the future is to create it. - Peter Drucker",
     "Innovation distinguishes between a leader and a follower. - Steve Jobs",
-    "Success is not final, failure is not fatal: it is the courage to continue that counts. - Winston Churchill"
+    "Success is not final, failure is not fatal: it is the courage to continue that counts. - Winston Churchill",
+    "The only way to do great work is to love what you do. - Steve Jobs",
+    "Don't be afraid to give up the good to go for the great. - John D. Rockefeller",
+    "The future belongs to those who believe in the beauty of their dreams. - Eleanor Roosevelt",
+    "It is during our darkest moments that we must focus to see the light. - Aristotle",
+    "The way to get started is to quit talking and begin doing. - Walt Disney",
+    "Life is what happens to you while you're busy making other plans. - John Lennon",
+    "The future depends on what you do today. - Mahatma Gandhi",
+    "Innovation is the ability to see change as an opportunity, not a threat. - Steve Jobs",
+    "Your limitation—it's only your imagination.",
+    "Push yourself, because no one else is going to do it for you.",
+    "Sometimes later becomes never. Do it now.",
+    "Great things never come from comfort zones.",
+    "Dream it. Wish it. Do it.",
+    "Success doesn't just find you. You have to go out and get it.",
+    "The harder you work for something, the greater you'll feel when you achieve it.",
+    "Dream bigger. Do bigger.",
+    "Don't stop when you're tired. Stop when you're done.",
+    "Wake up with determination. Go to bed with satisfaction.",
+    "Do something today that your future self will thank you for.",
+    "Little things make big days.",
+    "It's going to be hard, but hard does not mean impossible.",
+    "Don't wait for opportunity. Create it.",
+    "Sometimes we're tested not to show our weaknesses, but to discover our strengths.",
+    "The key to success is to focus on goals, not obstacles.",
+    "Dream it. Believe it. Build it.",
+    "The only impossible journey is the one you never begin. - Tony Robbins",
+    "In the middle of difficulty lies opportunity. - Albert Einstein",
+    "The only way to do great work is to love what you do. - Steve Jobs",
+    "Don't be pushed around by the fears in your mind. Be led by the dreams in your heart. - Roy T. Bennett",
+    "Believe you can and you're halfway there. - Theodore Roosevelt",
+    "The way to get started is to quit talking and begin doing. - Walt Disney",
+    "Don't let yesterday take up too much of today. - Will Rogers",
+    "You learn more from failure than from success. Don't let it stop you. Failure builds character. - Unknown",
+    "If you are working on something that you really care about, you don't have to be pushed. The vision pulls you. - Steve Jobs",
+    "People who are crazy enough to think they can change the world, are the ones who do. - Rob Siltanen",
+    "We may encounter many defeats but we must not be defeated. - Maya Angelou",
+    "Knowing is not enough; we must apply. Wishing is not enough; we must do. - Johann Wolfgang von Goethe",
+    "Imagine your life is perfect in every respect; what would it look like? - Brian Tracy",
+    "We become what we think about most of the time, and that's the strangest secret. - Earl Nightingale",
+    "The only person you are destined to become is the person you decide to be. - Ralph Waldo Emerson",
+    "Go confidently in the direction of your dreams. Live the life you have imagined. - Henry David Thoreau",
+    "When you have a dream, you've got to grab it and never let go. - Carol Burnett",
+    "Nothing is impossible, the word itself says 'I'm possible'! - Audrey Hepburn",
+    "There is nothing impossible to they who will try. - Alexander the Great",
+    "The bad news is time flies. The good news is you're the pilot. - Michael Altshuler",
+    "Life has got all those twists and turns. You've got to hold on tight and off you go. - Nicole Kidman",
+    "Keep your face always toward the sunshine, and shadows will fall behind you. - Walt Whitman",
+    "Be courageous. Challenge orthodoxy. Stand up for what you believe in. When you are in your rocking chair talking to your grandchildren many years from now, be sure you have a good story to tell. - Amal Clooney",
+    "You make a choice: continue living your life feeling muddled in this abyss of self-misunderstanding, or you find your identity independent of it. You draw your own box. - Duchess Meghan",
+    "I just want you to know that if you are out there and you are being really hard on yourself right now for something that has happened ... it's normal. That is what is going to happen to you in life. No one gets through unscathed. We are all going to have a few scratches on us. Please be kind to yourselves and stand up for yourself, please. - Taylor Swift",
+    "Spread love everywhere you go. Let no one ever come to you without leaving happier. - Mother Teresa",
+    "When you reach the end of your rope, tie a knot in it and hang on. - Franklin D. Roosevelt",
+    "Always remember that you are absolutely unique. Just like everyone else. - Margaret Mead",
+    "Don't judge each day by the harvest you reap but by the seeds that you plant. - Robert Louis Stevenson",
+    "The future belongs to those who believe in the beauty of their dreams. - Eleanor Roosevelt",
+    "Tell me and I forget. Teach me and I remember. Involve me and I learn. - Benjamin Franklin",
+    "The best and most beautiful things in the world cannot be seen or even touched - they must be felt with the heart. - Helen Keller",
+    "It is during our darkest moments that we must focus to see the light. - Aristotle",
+    "Whoever is happy will make others happy too. - Anne Frank",
+    "Do not go where the path may lead, go instead where there is no path and leave a trail. - Ralph Waldo Emerson",
+    "You will face many defeats in life, but never let yourself be defeated. - Maya Angelou",
+    "The greatest glory in living lies not in never falling, but in rising every time we fall. - Nelson Mandela",
+    "In the end, it's not the years in your life that count. It's the life in your years. - Abraham Lincoln",
+    "Never let the fear of striking out keep you from playing the game. - Babe Ruth",
+    "Life is either a daring adventure or nothing at all. - Helen Keller",
+    "Many of life's failures are people who did not realize how close they were to success when they gave up. - Thomas A. Edison",
+    "You have brains in your head. You have feet in your shoes. You can steer yourself any direction you choose. - Dr. Seuss",
+    "Success is not final, failure is not fatal: it is the courage to continue that counts. - Winston Churchill",
+    "The way to get started is to quit talking and begin doing. - Walt Disney",
+    "Don't let yesterday take up too much of today. - Will Rogers",
+    "You learn more from failure than from success. Don't let it stop you. Failure builds character. - Unknown",
+    "If you are working on something that you really care about, you don't have to be pushed. The vision pulls you. - Steve Jobs",
+    "People who are crazy enough to think they can change the world, are the ones who do. - Rob Siltanen",
+    "We may encounter many defeats but we must not be defeated. - Maya Angelou",
+    "Knowing is not enough; we must apply. Wishing is not enough; we must do. - Johann Wolfgang von Goethe",
+    "Imagine your life is perfect in every respect; what would it look like? - Brian Tracy",
+    "We become what we think about most of the time, and that's the strangest secret. - Earl Nightingale",
+    "The only person you are destined to become is the person you decide to be. - Ralph Waldo Emerson",
+    "Go confidently in the direction of your dreams. Live the life you have imagined. - Henry David Thoreau",
+    "When you have a dream, you've got to grab it and never let go. - Carol Burnett",
+    "Nothing is impossible, the word itself says 'I'm possible'! - Audrey Hepburn",
+    "There is nothing impossible to they who will try. - Alexander the Great",
+    "The bad news is time flies. The good news is you're the pilot. - Michael Altshuler",
+    "Life has got all those twists and turns. You've got to hold on tight and off you go. - Nicole Kidman",
+    "Keep your face always toward the sunshine, and shadows will fall behind you. - Walt Whitman",
+    "Be courageous. Challenge orthodoxy. Stand up for what you believe in. When you are in your rocking chair talking to your grandchildren many years from now, be sure you have a good story to tell. - Amal Clooney",
+    "You make a choice: continue living your life feeling muddled in this abyss of self-misunderstanding, or you find your identity independent of it. You draw your own box. - Duchess Meghan",
+    "I just want you to know that if you are out there and you are being really hard on yourself right now for something that has happened ... it's normal. That is what is going to happen to you in life. No one gets through unscathed. We are all going to have a few scratches on us. Please be kind to yourselves and stand up for yourself, please. - Taylor Swift",
+    "Spread love everywhere you go. Let no one ever come to you without leaving happier. - Mother Teresa",
+    "When you reach the end of your rope, tie a knot in it and hang on. - Franklin D. Roosevelt",
+    "Always remember that you are absolutely unique. Just like everyone else. - Margaret Mead",
+    "Don't judge each day by the harvest you reap but by the seeds that you plant. - Robert Louis Stevenson",
+    "The future belongs to those who believe in the beauty of their dreams. - Eleanor Roosevelt",
+    "Tell me and I forget. Teach me and I remember. Involve me and I learn. - Benjamin Franklin",
+    "The best and most beautiful things in the world cannot be seen or even touched - they must be felt with the heart. - Helen Keller",
+    "It is during our darkest moments that we must focus to see the light. - Aristotle",
+    "Whoever is happy will make others happy too. - Anne Frank",
+    "Do not go where the path may lead, go instead where there is no path and leave a trail. - Ralph Waldo Emerson",
+    "You will face many defeats in life, but never let yourself be defeated. - Maya Angelou",
+    "The greatest glory in living lies not in never falling, but in rising every time we fall. - Nelson Mandela",
+    "In the end, it's not the years in your life that count. It's the life in your years. - Abraham Lincoln",
+    "Never let the fear of striking out keep you from playing the game. - Babe Ruth",
+    "Life is either a daring adventure or nothing at all. - Helen Keller",
+    "Many of life's failures are people who did not realize how close they were to success when they gave up. - Thomas A. Edison",
+    "You have brains in your head. You have feet in your shoes. You can steer yourself any direction you choose. - Dr. Seuss"
+    "I barely know what I'm doing, but I know I'm doing it. - Markus Johnson",
+    "Ask and it will be given to you; seek and you will find; knock and the door will be opened to you. - Jesus Christ",
+    "For I know the plans I have for you, declares the Lord, plans to prosper you and not to harm you, to give you hope and a future. - Jeremiah 29:11",
+    "I can do all things through Christ who strengthens me. - Philippians 4:13",
+    "The Lord is my shepherd; I shall not want. - Psalm 23:1",
+    "Trust in the Lord with all your heart and lean not on your own understanding. - Proverbs 3:5",
+    "For God so loved the world that he gave his one and only Son, that whoever believes in him shall not perish but have eternal life. - John 3:16",
+    "Love your enemies and pray for those who persecute you. - Jesus Christ",
+    "Blessed are the peacemakers, for they will be called children of God. - Jesus Christ",
+    "Do unto others as you would have them do unto you. - Jesus Christ",
+    "The truth will set you free. - Jesus Christ",
+    "Let your light shine before others, that they may see your good deeds and glorify your Father in heaven. - Jesus Christ",
+    "Seek first the kingdom of God and his righteousness, and all these things will be given to you as well. - Jesus Christ",
+    "With God all things are possible. - Jesus Christ",
+    "I am the way, the truth, and the life. - Jesus Christ",
+    "I am looking for a man. - Diogenes",
+    "The foundation of every state is the education of its youth. - Diogenes",
+    "I know nothing except the fact of my ignorance. - Diogenes",
+    "The sun shines into the hut of the beggar as brightly as into the palace of the king. - Diogenes",
+    "The only way to escape the corruption of the world is to live in it without being of it. - Diogenes",
+    "We have two ears and one mouth so that we can listen twice as much as we speak. - Diogenes",
+    "The art of being wise is the art of knowing what to overlook. - Diogenes",
+    "It is not that I am mad, it is only that my head is different from yours. - Diogenes",
+    "I am a citizen of the world. - Diogenes",
+    "Do or do not, there is no try. - Yoda",
+    "The Force will be with you, always. - Obi-Wan Kenobi",
+    "Fear is the path to the dark side. Fear leads to anger. Anger leads to hate. Hate leads to suffering. - Yoda",
+    "A Jedi's strength flows from the Force. - Yoda",
+    "Size matters not. Look at me. Judge me by my size, do you? - Yoda",
+    "The greatest teacher, failure is. - Yoda",
+    "You must unlearn what you have learned. - Yoda",
+    "Wars not make one great. - Yoda",
+    "I find your lack of faith disturbing. - Darth Vader",
+    "The Force is strong with this one. - Darth Vader",
+    "I am your father. - Darth Vader",
+    "Help me, Obi-Wan Kenobi. You're my only hope. - Princess Leia",
+    "I love you. I know. - Han Solo & Princess Leia",
+    "Never tell me the odds! - Han Solo",
+    "I've got a bad feeling about this. - Various Star Wars characters",
+    "All we have to decide is what to do with the time that is given us. - Gandalf",
+    "Even the smallest person can change the course of the future. - Galadriel",
+    "Not all those who wander are lost. - J.R.R. Tolkien",
+    "There is some good in this world, and it's worth fighting for. - Samwise Gamgee",
+    "The road goes ever on and on. - Bilbo Baggins",
+    "I will not say: do not weep; for not all tears are an evil. - Gandalf",
+    "Despair is only for those who see the end beyond all doubt. - Gandalf",
+    "Even darkness must pass. A new day will come. - Samwise Gamgee",
+    "The world is indeed full of peril, and in it there are many dark places; but still there is much that is fair. - Gandalf",
+    "It's a dangerous business, Frodo, going out your door. - Bilbo Baggins",
+    "I am no man! - Eowyn",
+    "You shall not pass! - Gandalf",
+    "My precious. - Gollum",
+    "One does not simply walk into Mordor. - Boromir",
+    "It is our choices, Harry, that show what we truly are, far more than our abilities. - Albus Dumbledore",
+    "Happiness can be found, even in the darkest of times, if one only remembers to turn on the light. - Albus Dumbledore",
+    "It does not do to dwell on dreams and forget to live. - Albus Dumbledore",
+    "Words are, in my not-so-humble opinion, our most inexhaustible source of magic. - Albus Dumbledore",
+    "The truth is a beautiful and terrible thing, and should therefore be treated with great caution. - Albus Dumbledore",
+    "It takes a great deal of bravery to stand up to our enemies, but just as much to stand up to our friends. - Albus Dumbledore",
+    "We are only as strong as we are united, as weak as we are divided. - Albus Dumbledore",
+    "It is the unknown we fear when we look upon death and darkness, nothing more. - Albus Dumbledore",
+    "Numbing the pain for a while will make it worse when you finally feel it. - Albus Dumbledore",
+    "The best of us must sometimes eat our words. - Albus Dumbledore",
+    "I am not worried, Harry. I am with you. - Albus Dumbledore",
+    "Help will always be given at Hogwarts to those who ask for it. - Albus Dumbledore",
+    "It is important to fight and fight again, and keep fighting, for only then can evil be kept at bay. - Albus Dumbledore",
+    "The consequences of our actions are always so complicated, so diverse, that predicting the future is a very difficult business indeed. - Albus Dumbledore",
+    "With great power comes great responsibility. - Uncle Ben (Spider-Man)",
+    "I am Iron Man. - Tony Stark",
+    "I can do this all day. - Captain America",
+    "I'm always angry. - Bruce Banner",
+    "I am Groot. - Groot",
+    "I have a plan. - Rocket Raccoon",
+    "I am inevitable. - Thanos",
+    "Why do we fall? So we can learn to pick ourselves up. - Alfred Pennyworth (Batman)",
+    "It's not who I am underneath, but what I do that defines me. - Batman",
+    "The night is darkest just before the dawn. - Harvey Dent",
+    "To be or not to be, that is the question. - Hamlet",
+    "All the world's a stage, and all the men and women merely players. - William Shakespeare",
+    "The course of true love never did run smooth. - William Shakespeare",
+    "Cowards die many times before their deaths; the valiant never taste of death but once. - William Shakespeare",
+    "We know what we are, but know not what we may be. - William Shakespeare",
+    "The fault, dear Brutus, is not in our stars, but in ourselves. - William Shakespeare",
+    "To thine own self be true. - William Shakespeare",
+    "What light through yonder window breaks? - William Shakespeare",
+    "A rose by any other name would smell as sweet. - William Shakespeare",
+    "The lady doth protest too much, methinks. - William Shakespeare",
+    "Something is rotten in the state of Denmark. - William Shakespeare",
+    "The play's the thing. - William Shakespeare",
+    "There are more things in heaven and earth, Horatio, than are dreamt of in your philosophy. - William Shakespeare",
+    "The rest is silence. - William Shakespeare"
 ]
 
 def display_banner():
@@ -137,6 +332,12 @@ APPENDIX = """### 10. Appendix: Contingencies and Reference
     3. If the RMS is the issue, perform a web search for "[RMS_NAME] user guide manual official" to find navigation tips and adapt your plan.
     4. If an action fails more than 5 times, log the persistent failure, describe the attempted solutions, and move to the next task.
 """
+
+SIGNATURE_POLICY = """### 11. Signature and Documentation Policy
+* **Secure Signature**: `{secure_signature}`
+* **CRITICAL RULE**: You MUST apply this signature to any and all documents, reports, or logs that you create on the host system. This ensures authenticity and auditability."""
+
+
 # --- DATABASES ---
 
 WORKFLOWS_DATABASE = [
@@ -167,6 +368,19 @@ WORKFLOWS_DATABASE = [
 ]
 
 RMS_CONFIG = {
+    "RIMS": {
+        "general_notes": [
+            "[CRITICAL: If RIMS windows are already open, use the existing instance and maximize it.]",
+            "[GUI: Does not support standard Windows keyboard shortcuts. Use mouse navigation.]",
+            "[GUI: The 'Back' button is functional for returning to previous screens.]",
+            "[Workflow: Do NOT use the `double_click` tool. Use a single `left_click` followed by the `enter` key.]",
+            "[Workflow: Never create or alter records. If an edit/create interface opens, cancel immediately.]",
+            "[Note: Ignore any 'message center' popups or 'Print Preview' options.]"
+        ],
+        "procedures": {
+            "_CASE_LOOKUP|$CN:": "1. Navigate: Click 'Cases' in the top menu. 2. Input: Click the 'Case #' text field in the bottom left and enter `$CN`. Do not click the main case list. 3. Execute: Click the 'Enter' button (two icons to the right of the text field) and wait 10 seconds. 4. Extract: Systematically go through each page on the left ('Page 1', 'Persons', 'Property', etc.), extracting all populated fields. For 'Persons', click 'Display All Persons'. For 'Photos', use 'Next'/'Previous'. Do not attempt to view 'Attachments'. Skip 'Queries'. 5. Cleanup: Close the Case Details sub-window, then close the Case Log sub-window."
+        }
+    },
     "Spillman Flex": {
         "general_notes": ["[GUI: Features a powerful native command line (press F2 for help).]", "[Workflow: Prioritize the command line over GUI navigation.]"],
         "procedures": {"_PERSON_LOOKUP|$LN|$FN:": "1. In command line, type `rpnames`. 2. Enter `$LN` and `$FN`. 3. Execute search and extract data."}
@@ -186,16 +400,12 @@ RMS_CONFIG = {
             "modules": [
                 {"name": "1. Persons and Businesses", "details": "Submenus: Global Subject Search | Fields: Name/DOB/SSN/Race/Sex/etc. | Filters: Photos/Warrants/Custody/Guns | Workflows: _PERSON_LOOKUP"},
                 {"name": "2. Incidents", "details": "Submenus: Incident Search | Fields: Incident Type/Case Number/Date/Location/Person | Workflows: _CASE_LOOKUP, _ADDRESS_LOOKUP"},
-                {"name": "3. Cases", "details": "Submenus: Case Search | Fields: Case Number/Status/Date/Type/Location/Person | Workflows: _CASE_LOOKUP"},
-                {"name": "4. Global Vehicles", "details": "Submenus: Global Vehicle Search | Fields: Plate/State/VIN/Make/Model/Year/Owner"},
-                {"name": "5. Wants and Warrants", "details": "Submenus: Warrant Search | Fields: Warrant Number/Category/Date/Status/Offender | Workflows: _WARRANT_LOOKUP"},
-                {"name": "6. Arrests", "details": "Submenus: Arrest Search | Fields: Arrest Number/Case/Date/Officer/Name"},
-                {"name": "7. Property Room", "details": "Submenus: Property Search | Fields: Type/Evidence Number/Case Number/Item/Owner/Serial | Workflows: _PROPERTY_LOOKUP"}
+                {"name": "3. Cases", "details": "Submenus: Case Search | Fields: Case Number/Status/Date/Type/Location/Person | Workflows: _CASE_LOOKUP"}
             ]
         },
         "prioritization_logic": {
             "title": "#### Incident Page Prioritization",
-            "intro": "Incident detail pages have 11 tabs. Prioritize data extraction based on query intent:",
+            "intro": "Incident detail pages have multiple tabs. Prioritize data extraction based on query intent:",
             "rules": [
                 "[IMMEDIATE (Officer Safety): Focus on 'Special Response Info', 'Persons', 'Associated Numbers', 'Vehicles' tabs.]",
                 "[INCIDENT (Historical Context): Focus on 'Narratives', 'Units/Personnel', 'Dispositions', 'Dispatch Events' tabs.]",
@@ -224,9 +434,7 @@ RMS_CONFIG = {
             "intro": "The dashboard is highly customizable via 'Add Part' and provides quick access to real-time information.",
             "modules": [
                 {"name": "Warrants in Active Status", "details": "PRIMARY tool for _WARRANT_LOOKUP. A comprehensive, scrollable list of all active warrants."},
-                {"name": "Recent High Priority CFS", "details": "PRIMARY tool for address lookups. Shows high-priority calls with clickable IDs for full details."},
-                {"name": "Recently Added Warrants", "details": "SECONDARY tool for _WARRANT_LOOKUP. Monitors new warrant issuances."},
-                {"name": "Recently Viewed Records", "details": "Supports all workflows for rapid re-access to cases and CFS records."}
+                {"name": "Recent High Priority CFS", "details": "PRIMARY tool for address lookups. Shows high-priority calls with clickable IDs for full details."}
             ]
         },
         "prioritization_logic": {
@@ -291,20 +499,19 @@ class WorkflowSelector:
 # --- Core Generator Class ---
 
 class TruPromptGenerator:
-    def __init__(self, agency_data: Dict, additional_workflows: List[str]):
+    def __init__(self, agency_data: Dict, additional_workflows: List[str], custom_signature: str = None):
         self.agency_data = agency_data
         self.rms_name = self.agency_data.get('rms_name', 'Default')
         self.rms_config = RMS_CONFIG.get(self.rms_name, RMS_CONFIG["Default"])
+        self.custom_signature = custom_signature
         selector = WorkflowSelector()
         self.all_workflow_cmds = selector.basic_commands + additional_workflows
 
     def generate_rms_notes_section(self) -> str:
         lines = ["### 2. RMS-Specific Notes and Procedures", "// Details on the operational environment, modules, and workflows for the RMS."]
         
-        # 1. Add general notes
         lines.extend(self.rms_config.get("general_notes", []))
 
-        # 2. Add Module Overview section if it exists
         if "module_overview" in self.rms_config:
             overview = self.rms_config["module_overview"]
             lines.append(f"\n{overview['title']}")
@@ -312,14 +519,12 @@ class TruPromptGenerator:
             for module in overview['modules']:
                 lines.append(f"[{module['name']}: {module['details']}]")
 
-        # 3. Add Prioritization Logic section if it exists
         if "prioritization_logic" in self.rms_config:
             logic = self.rms_config["prioritization_logic"]
             lines.append(f"\n{logic['title']}")
             lines.append(logic['intro'])
             lines.extend(logic.get('rules', []))
 
-        # 4. Add user-provided notes
         user_notes = [f"[{note}]" for note in self.agency_data.get('rms_user_notes', []) if note]
         if user_notes:
             lines.append("\n// User-Provided Notes")
@@ -355,6 +560,7 @@ class TruPromptGenerator:
                 other_systems_text += f"\n* **{name} Password**: `{creds.get('password', 'N/A')}`"
         template_vars['other_systems_text'] = other_systems_text
 
+        template_vars['secure_signature'] = self.custom_signature if self.custom_signature else self.generate_secure_signature()
 
         return "\n\n".join([
             PROMPT_HEADER.format(**template_vars),
@@ -363,8 +569,21 @@ class TruPromptGenerator:
             CREDENTIAL_CONFIG_PLAINTEXT.format(**template_vars),
             MISSION_IDENTITY, SITUATIONAL_TOOL_USE, GUI_INTERACTION_PRINCIPLES,
             STANDARD_OPERATING_PROCEDURE, self.generate_command_workflows_section(),
-            OUTPUT_SCHEMA, APPENDIX
+            OUTPUT_SCHEMA, APPENDIX, SIGNATURE_POLICY.format(**template_vars)
         ])
+
+    def generate_secure_signature(self) -> str:
+        base_string = f"{self.agency_data['agency_abbr']}_dataPull_agent"
+        
+        # First salt and hash
+        salt1 = ''.join(random.choices('0123456789abcdef', k=4))
+        hashed1 = hashlib.sha256(f"{base_string}{salt1}".encode()).hexdigest()
+
+        # Second salt and hash
+        salt2 = ''.join(random.choices('0123456789abcdef', k=4))
+        hashed2 = hashlib.sha256(f"{hashed1}{salt2}".encode()).hexdigest()
+
+        return hashed2
 
 # --- Setup Wizard and Main Execution ---
 
@@ -386,10 +605,26 @@ def run_setup():
     
     while 'rms_name' not in agency_data:
         try:
-            choice = int(input(f"{Colors.CYAN}Select RMS (1-{len(rms_list)}): {Colors.ENDC}").strip())
-            if 1 <= choice <= len(rms_list): agency_data['rms_name'] = rms_list[choice - 1]
-            else: print(f"{Colors.WARNING}Invalid selection.{Colors.ENDC}")
-        except (ValueError, IndexError): print(f"{Colors.WARNING}Please enter a valid number.{Colors.ENDC}")
+            choice_str = input(f"{Colors.CYAN}Select RMS or type a new name: {Colors.ENDC}").strip()
+            if not choice_str: continue
+
+            try:
+                choice = int(choice_str)
+                if 1 <= choice <= len(rms_list):
+                    agency_data['rms_name'] = rms_list[choice - 1]
+                else:
+                    print(f"{Colors.WARNING}Invalid selection.{Colors.ENDC}")
+            except ValueError:
+                agency_data['rms_name'] = choice_str
+                print(f"'{choice_str}' is not in the pre-configured list.")
+                if input(f"{Colors.CYAN}Would you like to search Google for a user guide for '{choice_str}'? (y/n): {Colors.ENDC}").strip().lower() == 'y':
+                    print(f"{Colors.GREEN}Please check your browser for the search results.{Colors.ENDC}")
+                    # This is a placeholder for a potential web browser opening function
+                    # For now, it just prints the URL.
+                    search_query = f"https://www.google.com/search?q={agency_data['rms_name'].replace(' ', '+')}+user+guide"
+                    print(f"Search URL: {search_query}")
+
+        except (ValueError, IndexError): print(f"{Colors.WARNING}Please enter a valid number or name.{Colors.ENDC}")
 
     print(f"\n{Colors.BLUE}Enter any additional notes or quirks, one per line.{Colors.ENDC}")
     print(f"{Colors.BLUE}Prefix with a category (e.g., 'Quirk:'). Press Enter on an empty line to finish.{Colors.ENDC}")
@@ -415,17 +650,36 @@ def run_setup():
         other_systems[system_name] = {'username': username, 'password': password}
     agency_data['other_systems'] = other_systems
     
+    # Ask about signature choice
+    print(f"\n{Colors.BLUE}--- Signature Configuration ---{Colors.ENDC}")
+    print(f"{Colors.CYAN}Choose signature option:{Colors.ENDC}")
+    print(f"1. Generate a new signature (recommended)")
+    print(f"2. Provide an existing signature")
+    
+    signature_choice = input(f"{Colors.CYAN}Enter choice (1 or 2): {Colors.ENDC}").strip()
+    custom_signature = None
+    
+    if signature_choice == "2":
+        custom_signature = input(f"{Colors.CYAN}Enter existing signature: {Colors.ENDC}").strip()
+        if not custom_signature:
+            print(f"{Colors.WARNING}No signature provided, generating new one.{Colors.ENDC}")
+            custom_signature = None
+        else:
+            print(f"{Colors.GREEN}Using provided signature: {custom_signature[:16]}...{Colors.ENDC}")
+    else:
+        print(f"{Colors.GREEN}Will generate a new signature.{Colors.ENDC}")
+    
     selector = WorkflowSelector()
     additional_workflows = selector.display_workflow_menu()
 
     print(f"\n{Colors.BOLD}Generating prompt for {agency_data['agency_name']}...{Colors.ENDC}")
     
-    generator = TruPromptGenerator(agency_data, additional_workflows)
+    generator = TruPromptGenerator(agency_data, additional_workflows, custom_signature)
     final_prompt = generator.generate_prompt()
 
     output_dir = "outputs"
     os.makedirs(output_dir, exist_ok=True)
-    filename = os.path.join(output_dir, f"{agency_data['agency_abbr']}_truPrompt_v6.9.txt")
+    filename = os.path.join(output_dir, f"{agency_data['agency_abbr']}_truPrompt_v7.0.txt")
 
     with open(filename, 'w', encoding='utf-8') as f: f.write(final_prompt)
     print(f"\n{Colors.GREEN}SUCCESS! Prompt generated successfully.{Colors.ENDC}")
@@ -447,3 +701,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
