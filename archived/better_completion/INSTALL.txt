@@ -1,0 +1,71 @@
+# dataPull Agent Prompt Generator - Windows Installation
+
+## Quick Start
+
+### Option 1: Executable (Recommended)
+1. Double-click `run_generator.bat` to start the prompt generator
+2. Or run `datapull-prompt-generator.exe` directly
+
+### Option 2: Python Version (If executable has issues)
+1. Make sure Python 3.8+ is installed on your system
+2. Navigate to the `data` folder
+3. Install dependencies: `pip install -r requirements.txt`
+4. Double-click `run_python_version.bat` (from top level)
+5. Or run `python run_prompt_generator.py` from the `data` folder
+
+## Files Included
+
+### Top Level (Main Files)
+- `datapull-prompt-generator.exe` - Main executable (10.7 MB)
+- `run_generator.bat` - Easy launcher for executable
+- `run_python_version.bat` - Alternative Python launcher
+- `sample_agency_data.json` - Example JSON format for import
+- `outputs/` - Generated prompts (created when you run the generator)
+- `credentials/` - Encrypted credentials storage (created on first run)
+
+### Data Folder (`data/`)
+- `*.py` - Python source files (for Python version)
+- `command_library.txt` - Workflow definitions
+- `workflows_database.csv` - CSV database of all workflows
+- `requirements.txt` - Python dependencies
+- `README_Prompt_Generator.md` - Documentation
+
+## System Requirements
+- Windows 10 or later
+- No additional software required (all dependencies included)
+- 50MB free disk space
+
+## Usage
+
+### Option 1: Interactive Onboarding
+1. Run the executable
+2. Choose option 1 (Interactive onboarding)
+3. Follow the guided prompts to configure your agency
+4. Generated prompts will be saved in the `outputs/` directory
+
+### Option 2: Import from JSON
+1. Run the executable
+2. Choose option 2 (Import from JSON file)
+3. Provide the path to your JSON file (see `sample_agency_data.json` for format)
+4. Generated prompts will be saved in the `outputs/` directory
+
+This is useful for updating existing configurations or batch processing.
+
+## Features
+- Interactive 8-phase onboarding process
+- Workflow selection from 26+ available workflows
+- Secure credential encryption
+- Multiple output formats (YAML, Bootstrap, Persistent, Verbose)
+- RMS-specific optimizations
+
+## Troubleshooting
+- If the executable doesn't run, try running as administrator
+- Check Windows Defender/antivirus if blocked
+- Ensure you have write permissions in the installation directory
+- The executable includes all Python dependencies - no separate installation needed
+
+## Support
+For issues or questions, refer to the README file or contact the development team.
+
+## Security Note
+All credentials are encrypted and stored securely. The system never stores passwords in plain text.

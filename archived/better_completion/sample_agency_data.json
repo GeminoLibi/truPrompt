@@ -1,0 +1,34 @@
+{
+  "agency_name": "Sample Police Department",
+  "agency_abbrev": "SPD",
+  "city": "Sample City",
+  "county": "Sample County",
+  "state": "Sample State",
+  "rms_name": "OneSolutionRMS",
+  "rms_vendor": "CentralSquare",
+  "rms_username": "test_user",
+  "rms_password": "test_password",
+  "rms_quirks": [
+    "Multiple pasting in search fields",
+    "Search button sometimes requires double-click"
+  ],
+  "field_abbreviations": [
+    "DOB (Date of Birth)",
+    "SSN (Social Security Number)",
+    "DL# (Driver's License)"
+  ],
+  "os": "Windows",
+  "copware_username": "copware_user",
+  "copware_password": "copware_password",
+  "other_systems": {
+    "NCIC": {
+      "username": "ncic_user",
+      "password": "ncic_password"
+    }
+  },
+  "additional_workflows": [
+    "_COPWARE_LOOKUP",
+    "_WARRANT_CHECK",
+    "_FACIAL_RECOGNITION"
+  ]
+}

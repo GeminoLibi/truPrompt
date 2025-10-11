@@ -1,0 +1,322 @@
+_FC|$mode: 
+  goal: Comprehensive functions check - connectivity, interactivity, login, and system initialization 
+  1: log "Starting comprehensive functions check for: $mode" 
+  2: create_dir "dataPull_Arch" if not exists; create_file "Master_Instructions.txt" with content:
+     "# Master Instructions - dataPull Agent Learning File
+     # This file stores learned QuickRoutes and RMS_Notes for persistent learning
+     
+     ## QuickRoutes (Learned Navigation Paths)
+     # Format: [Description] -> [Step1] -> [Step2] -> [Step3]
+     # Example: [Person Search] -> [Click Search Menu] -> [Enter Name] -> [Click Submit]
+     
+     ## RMS_Notes (System-Specific Observations)
+     # Format: [Date] - [Observation] - [Workaround if needed]
+     # Example: [2024-01-01] - [Search button sometimes requires double-click] - [Use mouse_move + left_click twice]
+     
+     ## Session Logs
+     # Each session creates: Session_Log_[timestamp].txt
+     # This file contains: Master_Instructions.txt
+     "
+  3: test_connectivity: ping test; check internet connection; verify system responsiveness 
+  4: test_interactivity: 
+     - take screenshot; verify screen capture works
+     - test mouse operations: mouse_move to safe area; left_click; verify click registered
+     - test keyboard: type test string; verify text entry works
+     - test OCR: capture text area; verify OCR functionality
+  5: if $mode == "RMS": 
+     - nav RMS system; verify navigation works
+     - login [RMS_USERNAME]|[RMS_PASSWORD]; verify login success
+     - test basic RMS functions: search, view, navigate
+     - log "RMS connection verified and functional"
+  6: if $mode == "OSINT": 
+     - nav OSINT sources; verify access
+     - test search functionality; verify results
+     - log "OSINT connection verified and functional"
+  7: if $mode == "conn": 
+     - establish general connection; test basic operations
+     - verify system responsiveness; test error handling
+     - log "General connection verified and functional"
+  8: create_file "Session_Log_[timestamp].txt" with content:
+     "Session started: [timestamp]
+     Functions check completed successfully
+     System ready for operations
+     Master_Instructions.txt initialized"
+  9: log "Functions check complete - system ready for operations" 
+  10: exit 
+
+_COPWARE_LOOKUP|$Question: 
+  goal: Search COPWARE db via NLP query, synthesize answer, & cite sources. 
+  1: call FC (foc conn) 
+  2: nav "content.copware.com"; if insecure warn, click elsewhere to dismiss 
+  3: login [COPWARE_USERNAME]|[COPWARE_PASSWORD]; CRITICAL: click mouse into PW field, do not Tab 
+  4: find/click "Advanced Search" 
+  5: type keywords from $Question in search fld; subm 
+  6: loop res: OCR src name; click link; OCR doc txt; if info suff, break; else, click "Next Hit Doc" 
+  7: comp summ of all finds; fmt JSON out: {summary, citations} 
+ 
+_PURGE_FILES|$CONFIRM: 
+  goal: DANGER: Perm del dataPull_Arch, all desktop logs/txt, & empty Recycle Bin 
+  1: if $CONFIRM != "CONFIRM_PURGE", log "Err: Confirmation mismatch. Aborting." ; exit 
+  2: nav Desktop 
+  3: del "dataPull_Arch"; del "*.txt"; R-click Recycle Bin - -
+  4: log "Purge complete." ; exit 
+ 
+_FORCE_FC|$mode: 
+  goal: force FC (full/partial ex $mode=full/rms_only) 
+  1: log "Forced FC init mode: $mode"; call FC; out FC JSON 
+ 
+_SELF_EVAL|$mode: 
+  goal: self eval ($mode=full/diag/prompt_anlyz/etc) 
+  1: log "Self-eval init mode: $mode" 
+  2: if $mode == "full": run comprehensive self-evaluation; check all workflows; test connections 
+  3: if $mode == "diag": run diagnostic checks; identify system issues 
+  4: if $mode == "prompt_anlyz": analyze prompt effectiveness; suggest improvements 
+  5: collect performance metrics; analyze success rates; identify issues 
+  6: format results as JSON: {evaluation_type, success_rate, issues_found, recommendations} 
+  7: log "Self-evaluation complete"; exit 
+ 
+_UNKNOWN_QUERY_NLP|$Q_TXT: 
+  goal: hndl unfmt qry 
+  1: anlyz $Q_TXT NLP intent; create POA; extr info; fmt JSON 
+ 
+_PERSON_LOOKUP|$LN|$FN: 
+  goal: RMS pers srch 
+  1: call FC (foc RMS); nav person search; enter $LN/$FN; subm; OCR extr; fmt JSON 
+ 
+_CASE_LOOKUP|$CN: 
+  goal: RMS case/incident srch 
+  1: call FC (foc RMS); nav case search; enter $CN; subm; OCR extr; apply DRT 
+ 
+_ADDRESS_LOOKUP|$HN|$ST: 
+  goal: RMS addr srch 
+  1: call FC; nav Addr Srch; inp $HN|$ST; subm; extr; JSON 
+ 
+_LICENSE_PLATE_LOOKUP|$PN: 
+  goal: RMS plate srch 
+  1: call FC (foc RMS); nav plate search; enter $PN; subm; OCR extr; fmt JSON 
+ 
+_DIAGNOSTIC_INPUT_CHECK|$mode: 
+  goal: Verify keyboard and mouse input mappings. 
+  1: if "keyboard" or "full", launch notepad, type test string, verify combos (Ctrl+A/C/V); launch browser to keyboardchecker.com, test special keys. 
+  2: if "mouse" or "full", launch notepad, test right_click menu, test double_click (click+Return) select. 
+  3: out JSON {kbd_status, mouse_status}
+
+_INITIATE|$start: 
+  goal: System initialization and readiness check 
+  1: log "Initializing dataPull agent system..." 
+  2: call FC (foc RMS) # Run comprehensive functions check 
+  3: verify Master_Instructions.txt exists; if not, recreate from template 
+  4: create_file "Session_Log_[timestamp].txt" for current session 
+  5: log "System initialization complete - ready for RFIs" 
+  6: log "Sys rdy RFIs" 
+  7: exit 
+
+_WARRANT_CHECK|$SID|$JUR: 
+  goal: warr srch subj (CJIS/NCIC via RMS) 
+  1: call FC (foc RMS/CJIS) 
+  2: launch RMS; nav Warr Srch/NCIC Qry 
+  3: type $SID subj fld; sel $JUR if dd 
+  4: subm; wait res (hndl CAPTCHA) 
+  5: OCR extr warr det (ID/chg/stat/iss dt) 
+  6: fmt JSON; DRT (1:active warr;2:priors;3:x-st alerts) 
+
+_INCIDENT_REPORT|$DR|$LOC: 
+  goal: inc rpts time/loc (RMS pat anlyz) 
+  1: call FC 
+  2: launch RMS; nav Inc/Rpt Srch 
+  3: inp $DR (ex 2025-09-01 to 2025-09-11) + $LOC (ex 123 Main St) fltrs 
+  4: subm; scroll pag res 
+  5: OCR extr rpts (narr/off/outc); DataCh ver known cases 
+  6: fmt JSON; DRT (1:match inc;2:rel calls;3:crime trnds) 
+
+_PROPERTY_SEARCH|$IDESC|$SNUM: 
+  goal: stol/lost prop qry RMS (NCIC prop via CJIS) 
+  1: call FC 
+  2: launch RMS; nav Prop/Evid Srch 
+  3: type $IDESC (ex gold neck) + $SNUM if avail 
+  4: subm; fltr stat (stol/rec) 
+  5: OCR extr match (own/theft dt/loc) 
+  6: fmt JSON; DRT (1:exact;2:sim items;3:linked rings) 
+
+_FACIAL_RECOGNITION|$IMG_URL|$SNAM: 
+  goal: fac rec qry img vs RMS mug db 
+  1: call FC; view_img $IMG_URL anlyz/conf face 
+  2: launch RMS; nav Biom/Fac Srch 
+  3: upl/att img; type $SNAM ref 
+  4: subm; wait match (hndl ver prmpts) 
+  5: OCR extr hits (conf sc/linked rec) 
+  6: fmt JSON; DRT (1:hi-match ID;2:sim faces;3:assoc photos). Flag bias risks log 
+
+_OSINT_ASSOCIATES|$SNAM|$DEPTH: 
+  goal: OSINT assoc (soc med/pub rec) 
+  1: call FC 
+  2: web_srch "$SNAM assoc crim rec" (lim $DEPTH res ex 5) 
+  3: top res, browse_pg instr "Extr names/rel/loc pub prof/art" 
+  4: x-ver RMS if avail (LinkQ nets) 
+  5: OCR/log ext data; fmt JSON 
+  6: DRT (1:conf assoc;2:soc links;3:inf nets) 
+
+_NARRATIVE_EXTRACT|$CID: 
+  goal: extr full narr incons RMS res 
+  1: call FC 
+  2: launch RMS; srch $CID res pg (scrn init links/cont: cn#/dts/off) 
+  3: ea narr link: R-click > Open New Tab; OCR full txt/meta; close tab; ver res pg unch 
+  4: if res shift: upd map; note incons 
+  5: trk chklist (ex "Narr1: ✓ Extr") 
+  6: DRT (1:core narr;2:meta;3:rel notes); out w/ succ summ 
+
+_EXPLORE_RMS|$USER|$PASS: 
+  goal: Heuristically explore an unknown RMS GUI. Identify and map common modules (Person, Case, etc.) by searching for keywords via OCR. Log discovered navigation paths as QuickRoutes and data fields to Master_Inst.txt for future use. 
+  1: log "Generic RMS exploration init." 
+  2: call FC (foc RMS) # Ensure RMS name/path is known 
+  3: launch identified RMS application 
+  4: wait for window; scrn; anlyz 
+  5: if OCR "Username" and $USER != null: type $USER; type $PASS; subm; log "Login credentials submitted."; else log "No login prompt or no credentials provided. Proceeding." 
+  6: wait for main dashboard; scrn; log "Analyzing main dashboard." 
+  7: define target_keywords = ["Person", "Name", "Subject", "Case", "Incident", "Report", "Vehicle", "Plate", "Property", "Evidence", "Warrant", "Search", "Query"] 
+  8: define explored_paths = [] 
+  9: loop target_keywords: 
+  10:   log "Searching for keyword: [current_keyword]" 
+  11:   # Use PACE plan: P_OCR+Click, A_IconDetect+Click 
+  12:   if OCR finds clickable [current_keyword]: 
+  13:     path_step = "click [current_keyword]" 
+  14:     if path_step in explored_paths: continue # Avoid re-exploring 
+  15:     click [current_keyword] 
+  16:     wait load; scrn 
+  17:     log "Arrived at '[current_keyword]' module. Analyzing fields..." 
+  18:     fields = OCR for labels near input boxes (e.g., "Last Name", "Case #", "DOB", "Plate") 
+  19:     upd Master_Inst.txt "QuickRoutes: Go_To_[current_keyword] = [path_step]" 
+  20:     upd Master_Inst.txt "RMS_Notes: [current_keyword]_Fields = [fields]" 
+  21:     add path_step to explored_paths 
+  22:     nav to main dashboard (find/click "Home", "Main", "Dashboard" or kbd Escape) 
+  23:   else: 
+  24:     log "[current_keyword] not found as direct button. Checking menus (e.g., 'File', 'Search')." 
+  25:     # This section can be expanded with logic to click top-level menus, OCR dropdowns, and build multi-step paths. 
+  26: log "Exploration loop complete. Review Master_Inst.txt for discovered routes and fields." 
+  27: desktop reset 
+
+_ADDRESS_FULL_REPORT|$ADDRESS: 
+  goal: Run all individual address lookup modules for a complete premises report. 
+  1: log "Starting full report for address: $ADDRESS" 
+  2: _ADDRESS_CFS_HISTORY|$ADDRESS|1 year 
+  3: _ADDRESS_KNOWN_PERSONS|$ADDRESS 
+  4: _ADDRESS_VEHICLES|$ADDRESS 
+  5: _ADDRESS_WEAPONS_INFO|$ADDRESS 
+  6: _ADDRESS_HAZARDS|$ADDRESS 
+  7: log "All address checks complete. Consolidating report." 
+  8: exit 
+
+_ADDRESS_CFS_HISTORY|$ADDRESS|$DATE_RANGE: 
+  goal: Find a summary of all Calls for Service at a given address for a specified time period. 
+  1: log "Searching CFS history for address: $ADDRESS with range: $DATE_RANGE" 
+  2: ocr_and_click "RMS Main Menu" 
+  3: ocr_and_click "Premise Search" 
+  4: ocr_and_type "Address Field" "$ADDRESS" 
+  5: press "Enter" 
+  6: ocr_and_click "Calls for Service Tab" 
+  7: ocr_and_click "Date Filter" 
+  8: ocr_and_type "Date Range Field" "$DATE_RANGE" 
+  9: press "Enter" 
+  10: ocr_and_screenshot "Results Window" "cfs_history_report.png" 
+  11: log "CFS history search complete." 
+  12: exit 
+
+_ADDRESS_KNOWN_PERSONS|$ADDRESS: 
+  goal: Identify and list all persons previously associated with the address in the RMS. 
+  1: log "Searching for known persons at: $ADDRESS" 
+  2: ocr_and_click "RMS Main Menu" 
+  3: ocr_and_click "Premise Search" 
+  4: ocr_and_type "Address Field" "$ADDRESS" 
+  5: press "Enter" 
+  6: ocr_and_click "Associated Persons Tab" 
+  7: ocr_and_screenshot "Results Window" "known_persons_report.png" 
+  8: log "Known persons search complete." 
+  9: exit 
+
+_ADDRESS_VEHICLES|$ADDRESS: 
+  goal: Identify and list all vehicles registered or associated with the address. 
+  1: log "Searching for vehicles at: $ADDRESS" 
+  2: ocr_and_click "RMS Main Menu" 
+  3: ocr_and_click "Premise Search" 
+  4: ocr_and_type "Address Field" "$ADDRESS" 
+  5: press "Enter" 
+  6: ocr_and_click "Associated Vehicles Tab" 
+  7: ocr_and_screenshot "Results Window" "address_vehicles_report.png" 
+  8: log "Vehicle search complete." 
+  9: exit 
+
+_ADDRESS_WEAPONS_INFO|$ADDRESS: 
+  goal: Find any mention of weapons (registered or in reports) associated with the address. 
+  1: log "Searching for weapons info at: $ADDRESS" 
+  2: ocr_and_click "RMS Main Menu" 
+  3: ocr_and_click "Global Search" 
+  4: ocr_and_type "Search Field" ""$ADDRESS" AND (weapon OR firearm OR gun OR rifle OR handgun OR shotgun)" 
+  5: press "Enter" 
+  6: ocr_and_screenshot "Results Window" "weapons_info_report.png" 
+  7: log "Weapons info search complete." 
+  8: exit 
+
+_ADDRESS_HAZARDS|$ADDRESS: 
+  goal: Find any premise hazards, officer safety notes, or medical alerts for the address. 
+  1: log "Checking for hazards/alerts at: $ADDRESS" 
+  2: ocr_and_click "RMS Main Menu" 
+  3: ocr_and_click "Premise Search" 
+  4: ocr_and_type "Address Field" "$ADDRESS" 
+  5: press "Enter" 
+  6: ocr_and_click "Flags and Hazards Tab" 
+  7: ocr_and_screenshot "Results Window" "address_hazards_report.png" 
+  8: log "Premise hazard check complete." 
+  9: exit
+
+_DEPLOY_AGENT_MONITOR|$mode: 
+  goal: Deploy agent terminal monitor script to prevent agent self-termination. 
+  1: log "Deploying agent monitor script mode: $mode" 
+  2: if $mode == "batch": create_file "agent_monitor.bat" with content:
+     "@echo off
+     echo Agent Terminal Monitor Started...
+     :loop
+     tasklist | findstr \"cli.exe\" >nul
+     if errorlevel 1 (
+         echo Agent terminal not found. Restarting...
+         start \"\" \"C:\\Program Files (x86)\\Truleo\\Computer Using Agent\\cli.exe\"
+         timeout /t 5 /nobreak >nul
+     )
+     timeout /t 10 /nobreak >nul
+     goto loop"
+  3: if $mode == "powershell": create_file "agent_monitor.ps1" with content:
+     "# Agent Terminal Monitor - PowerShell Version
+     Write-Host \"Agent Terminal Monitor Started...\"
+     while ($true) {
+         $process = Get-Process -Name \"cli\" -ErrorAction SilentlyContinue
+         if (-not $process) {
+             Write-Host \"Agent terminal not found. Restarting...\"
+             Start-Process \"C:\\Program Files (x86)\\Truleo\\Computer Using Agent\\cli.exe\"
+             Start-Sleep -Seconds 5
+         }
+         Start-Sleep -Seconds 10
+     }"
+  4: if $mode == "both": create both batch and powershell versions with above content
+  5: create_file "start_monitor.bat" with content:
+     "@echo off
+     echo Starting Agent Terminal Monitor...
+     echo Choose monitoring method:
+     echo 1. Batch Script (Recommended)
+     echo 2. PowerShell Script
+     set /p choice=Enter your choice (1 or 2):
+     if \"%choice%\"==\"1\" call agent_monitor.bat
+     if \"%choice%\"==\"2\" powershell -ExecutionPolicy Bypass -File agent_monitor.ps1"
+  6: create_file "README.txt" with content:
+     "# Agent Terminal Monitor System
+     This system automatically monitors and restarts the Agent Terminal if it gets closed.
+     FILES INCLUDED:
+     1. start_monitor.bat - Main launcher with menu selection
+     2. agent_monitor.bat - Batch script version
+     3. agent_monitor.ps1 - PowerShell script version
+     4. README.txt - This documentation file
+     USAGE INSTRUCTIONS:
+     1. Double-click start_monitor.bat to launch the monitor system
+     2. Choose option 1 for Batch script or 2 for PowerShell
+     3. The monitor will start and run in background
+     4. To stop monitoring, close the monitor window"
+  7: log "Agent monitor deployment complete. Run start_monitor.bat to begin monitoring." 
+  8: exit 
