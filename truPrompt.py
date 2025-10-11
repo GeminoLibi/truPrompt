@@ -343,13 +343,20 @@ class TruPromptGenerator:
 
         for wf in wfs_to_include:
             command = wf["Full Command"]
-            procedure = self.rms_config.get("procedures", {}).get(command, default_proc)
+            # Check for a specific procedure in RMS_CONFIG, otherwise use the global default for that command
+            procedure = self.rms_config.get("procedures", {}).get(command, self._get_default_procedure(command, default_proc))
             lines.append(f"- command: {command}")
             lines.append(f"  short_form: {wf['Short Form']}")
             lines.append(f"  description: \"{wf['Description']}\"")
             lines.append(f"  procedure: \"{procedure}\"")
             lines.append("")
         return "\n".join(lines)
+    
+    def _get_default_procedure(self, command: str, fallback: str) -> str:
+        """Gets a specific default procedure for a command if one exists."""
+        if command.startswith("_COPWARE_LOOKUP"):
+            return "1. Navigate to content.copware.com. 2. Login with credentials if required. NOTE: A workflow error has occurred where using 'tab' highlights 'Forgot Password' instead of the password field; click into the password field directly. 3. Navigate to 'Advanced Search'. 4. Analyze the $Question, extract keywords, and input them. 5. Loop through results, extracting text and source citations. 6. Synthesize a final answer and provide citations."
+        return fallback
 
     def generate_prompt(self) -> str:
         template_vars = self.agency_data.copy()
@@ -423,8 +430,6 @@ def run_setup():
                 print(f"'{choice_str}' is not in the pre-configured list.")
                 if input(f"{Colors.CYAN}Would you like to search Google for a user guide for '{choice_str}'? (y/n): {Colors.ENDC}").strip().lower() == 'y':
                     print(f"{Colors.GREEN}Please check your browser for the search results.{Colors.ENDC}")
-                    # This is a placeholder for a potential web browser opening function
-                    # For now, it just prints the URL.
                     search_query = f"https://www.google.com/search?q={agency_data['rms_name'].replace(' ', '+')}+user+guide"
                     print(f"Search URL: {search_query}")
 
@@ -486,4 +491,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
