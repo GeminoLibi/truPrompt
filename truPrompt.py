@@ -36,7 +36,7 @@ class Colors:
 ASCII_BANNER = """
 ================================================================================
 |                                                                            |
-|                        truPrompt v6.9 (Final)                              |
+|                        truPrompt v7.0 (Final)                              |
 |                                                                            |
 ================================================================================
 > > > Standardized Agent Prompt Generator <<<
@@ -137,6 +137,12 @@ APPENDIX = """### 10. Appendix: Contingencies and Reference
     3. If the RMS is the issue, perform a web search for "[RMS_NAME] user guide manual official" to find navigation tips and adapt your plan.
     4. If an action fails more than 5 times, log the persistent failure, describe the attempted solutions, and move to the next task.
 """
+
+SIGNATURE_POLICY = """### 11. Signature and Documentation Policy
+* **Secure Signature**: `{secure_signature}`
+* **CRITICAL RULE**: You MUST apply this signature to any and all documents, reports, or logs that you create on the host system. This ensures authenticity and auditability."""
+
+
 # --- DATABASES ---
 
 WORKFLOWS_DATABASE = [
@@ -167,6 +173,19 @@ WORKFLOWS_DATABASE = [
 ]
 
 RMS_CONFIG = {
+    "RIMS": {
+        "general_notes": [
+            "[CRITICAL: If RIMS windows are already open, use the existing instance and maximize it.]",
+            "[GUI: Does not support standard Windows keyboard shortcuts. Use mouse navigation.]",
+            "[GUI: The 'Back' button is functional for returning to previous screens.]",
+            "[Workflow: Do NOT use the `double_click` tool. Use a single `left_click` followed by the `enter` key.]",
+            "[Workflow: Never create or alter records. If an edit/create interface opens, cancel immediately.]",
+            "[Note: Ignore any 'message center' popups or 'Print Preview' options.]"
+        ],
+        "procedures": {
+            "_CASE_LOOKUP|$CN:": "1. Navigate: Click 'Cases' in the top menu. 2. Input: Click the 'Case #' text field in the bottom left and enter `$CN`. Do not click the main case list. 3. Execute: Click the 'Enter' button (two icons to the right of the text field) and wait 10 seconds. 4. Extract: Systematically go through each page on the left ('Page 1', 'Persons', 'Property', etc.), extracting all populated fields. For 'Persons', click 'Display All Persons'. For 'Photos', use 'Next'/'Previous'. Do not attempt to view 'Attachments'. Skip 'Queries'. 5. Cleanup: Close the Case Details sub-window, then close the Case Log sub-window."
+        }
+    },
     "Spillman Flex": {
         "general_notes": ["[GUI: Features a powerful native command line (press F2 for help).]", "[Workflow: Prioritize the command line over GUI navigation.]"],
         "procedures": {"_PERSON_LOOKUP|$LN|$FN:": "1. In command line, type `rpnames`. 2. Enter `$LN` and `$FN`. 3. Execute search and extract data."}
@@ -186,16 +205,12 @@ RMS_CONFIG = {
             "modules": [
                 {"name": "1. Persons and Businesses", "details": "Submenus: Global Subject Search | Fields: Name/DOB/SSN/Race/Sex/etc. | Filters: Photos/Warrants/Custody/Guns | Workflows: _PERSON_LOOKUP"},
                 {"name": "2. Incidents", "details": "Submenus: Incident Search | Fields: Incident Type/Case Number/Date/Location/Person | Workflows: _CASE_LOOKUP, _ADDRESS_LOOKUP"},
-                {"name": "3. Cases", "details": "Submenus: Case Search | Fields: Case Number/Status/Date/Type/Location/Person | Workflows: _CASE_LOOKUP"},
-                {"name": "4. Global Vehicles", "details": "Submenus: Global Vehicle Search | Fields: Plate/State/VIN/Make/Model/Year/Owner"},
-                {"name": "5. Wants and Warrants", "details": "Submenus: Warrant Search | Fields: Warrant Number/Category/Date/Status/Offender | Workflows: _WARRANT_LOOKUP"},
-                {"name": "6. Arrests", "details": "Submenus: Arrest Search | Fields: Arrest Number/Case/Date/Officer/Name"},
-                {"name": "7. Property Room", "details": "Submenus: Property Search | Fields: Type/Evidence Number/Case Number/Item/Owner/Serial | Workflows: _PROPERTY_LOOKUP"}
+                {"name": "3. Cases", "details": "Submenus: Case Search | Fields: Case Number/Status/Date/Type/Location/Person | Workflows: _CASE_LOOKUP"}
             ]
         },
         "prioritization_logic": {
             "title": "#### Incident Page Prioritization",
-            "intro": "Incident detail pages have 11 tabs. Prioritize data extraction based on query intent:",
+            "intro": "Incident detail pages have multiple tabs. Prioritize data extraction based on query intent:",
             "rules": [
                 "[IMMEDIATE (Officer Safety): Focus on 'Special Response Info', 'Persons', 'Associated Numbers', 'Vehicles' tabs.]",
                 "[INCIDENT (Historical Context): Focus on 'Narratives', 'Units/Personnel', 'Dispositions', 'Dispatch Events' tabs.]",
@@ -224,9 +239,7 @@ RMS_CONFIG = {
             "intro": "The dashboard is highly customizable via 'Add Part' and provides quick access to real-time information.",
             "modules": [
                 {"name": "Warrants in Active Status", "details": "PRIMARY tool for _WARRANT_LOOKUP. A comprehensive, scrollable list of all active warrants."},
-                {"name": "Recent High Priority CFS", "details": "PRIMARY tool for address lookups. Shows high-priority calls with clickable IDs for full details."},
-                {"name": "Recently Added Warrants", "details": "SECONDARY tool for _WARRANT_LOOKUP. Monitors new warrant issuances."},
-                {"name": "Recently Viewed Records", "details": "Supports all workflows for rapid re-access to cases and CFS records."}
+                {"name": "Recent High Priority CFS", "details": "PRIMARY tool for address lookups. Shows high-priority calls with clickable IDs for full details."}
             ]
         },
         "prioritization_logic": {
@@ -301,10 +314,8 @@ class TruPromptGenerator:
     def generate_rms_notes_section(self) -> str:
         lines = ["### 2. RMS-Specific Notes and Procedures", "// Details on the operational environment, modules, and workflows for the RMS."]
         
-        # 1. Add general notes
         lines.extend(self.rms_config.get("general_notes", []))
 
-        # 2. Add Module Overview section if it exists
         if "module_overview" in self.rms_config:
             overview = self.rms_config["module_overview"]
             lines.append(f"\n{overview['title']}")
@@ -312,14 +323,12 @@ class TruPromptGenerator:
             for module in overview['modules']:
                 lines.append(f"[{module['name']}: {module['details']}]")
 
-        # 3. Add Prioritization Logic section if it exists
         if "prioritization_logic" in self.rms_config:
             logic = self.rms_config["prioritization_logic"]
             lines.append(f"\n{logic['title']}")
             lines.append(logic['intro'])
             lines.extend(logic.get('rules', []))
 
-        # 4. Add user-provided notes
         user_notes = [f"[{note}]" for note in self.agency_data.get('rms_user_notes', []) if note]
         if user_notes:
             lines.append("\n// User-Provided Notes")
@@ -355,6 +364,7 @@ class TruPromptGenerator:
                 other_systems_text += f"\n* **{name} Password**: `{creds.get('password', 'N/A')}`"
         template_vars['other_systems_text'] = other_systems_text
 
+        template_vars['secure_signature'] = self.generate_secure_signature()
 
         return "\n\n".join([
             PROMPT_HEADER.format(**template_vars),
@@ -363,8 +373,21 @@ class TruPromptGenerator:
             CREDENTIAL_CONFIG_PLAINTEXT.format(**template_vars),
             MISSION_IDENTITY, SITUATIONAL_TOOL_USE, GUI_INTERACTION_PRINCIPLES,
             STANDARD_OPERATING_PROCEDURE, self.generate_command_workflows_section(),
-            OUTPUT_SCHEMA, APPENDIX
+            OUTPUT_SCHEMA, APPENDIX, SIGNATURE_POLICY.format(**template_vars)
         ])
+
+    def generate_secure_signature(self) -> str:
+        base_string = f"{self.agency_data['agency_abbr']}_dataPull_agent"
+        
+        # First salt and hash
+        salt1 = ''.join(random.choices('0123456789abcdef', k=4))
+        hashed1 = hashlib.sha256(f"{base_string}{salt1}".encode()).hexdigest()
+
+        # Second salt and hash
+        salt2 = ''.join(random.choices('0123456789abcdef', k=4))
+        hashed2 = hashlib.sha256(f"{hashed1}{salt2}".encode()).hexdigest()
+
+        return hashed2
 
 # --- Setup Wizard and Main Execution ---
 
@@ -386,10 +409,26 @@ def run_setup():
     
     while 'rms_name' not in agency_data:
         try:
-            choice = int(input(f"{Colors.CYAN}Select RMS (1-{len(rms_list)}): {Colors.ENDC}").strip())
-            if 1 <= choice <= len(rms_list): agency_data['rms_name'] = rms_list[choice - 1]
-            else: print(f"{Colors.WARNING}Invalid selection.{Colors.ENDC}")
-        except (ValueError, IndexError): print(f"{Colors.WARNING}Please enter a valid number.{Colors.ENDC}")
+            choice_str = input(f"{Colors.CYAN}Select RMS or type a new name: {Colors.ENDC}").strip()
+            if not choice_str: continue
+
+            try:
+                choice = int(choice_str)
+                if 1 <= choice <= len(rms_list):
+                    agency_data['rms_name'] = rms_list[choice - 1]
+                else:
+                    print(f"{Colors.WARNING}Invalid selection.{Colors.ENDC}")
+            except ValueError:
+                agency_data['rms_name'] = choice_str
+                print(f"'{choice_str}' is not in the pre-configured list.")
+                if input(f"{Colors.CYAN}Would you like to search Google for a user guide for '{choice_str}'? (y/n): {Colors.ENDC}").strip().lower() == 'y':
+                    print(f"{Colors.GREEN}Please check your browser for the search results.{Colors.ENDC}")
+                    # This is a placeholder for a potential web browser opening function
+                    # For now, it just prints the URL.
+                    search_query = f"https://www.google.com/search?q={agency_data['rms_name'].replace(' ', '+')}+user+guide"
+                    print(f"Search URL: {search_query}")
+
+        except (ValueError, IndexError): print(f"{Colors.WARNING}Please enter a valid number or name.{Colors.ENDC}")
 
     print(f"\n{Colors.BLUE}Enter any additional notes or quirks, one per line.{Colors.ENDC}")
     print(f"{Colors.BLUE}Prefix with a category (e.g., 'Quirk:'). Press Enter on an empty line to finish.{Colors.ENDC}")
@@ -425,7 +464,7 @@ def run_setup():
 
     output_dir = "outputs"
     os.makedirs(output_dir, exist_ok=True)
-    filename = os.path.join(output_dir, f"{agency_data['agency_abbr']}_truPrompt_v6.9.txt")
+    filename = os.path.join(output_dir, f"{agency_data['agency_abbr']}_truPrompt_v7.0.txt")
 
     with open(filename, 'w', encoding='utf-8') as f: f.write(final_prompt)
     print(f"\n{Colors.GREEN}SUCCESS! Prompt generated successfully.{Colors.ENDC}")
@@ -447,3 +486,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
