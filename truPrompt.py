@@ -27,6 +27,7 @@ class Colors:
     CYAN = '\033[96m'
     GREEN = '\033[92m'
     WARNING = '\033[93m'
+    YELLOW = '\033[93m'
     FAIL = '\033[91m'
     ENDC = '\033[0m'
     BOLD = '\033[1m'
@@ -35,20 +36,20 @@ class Colors:
 ASCII_BANNER = """
 =======================================================================================
                                                                                     
-                                   ________                                         
-                                  `MMMMMMMb.                                        
- /                                 MM   `Mb                                 /       
-/M     ___  __ ___   ___ MM    MM ___  __    _____  ___  __    __  __ ____   /M       
-/MMMMM  `MM 6MM `MM    MM MM    MM `MM 6MM  6MMMMMb `MM 6MMb  6MMb `M6MMMMb /MMMMM   
-  MM     MM69 "  MM    MM MM   .M9  MM69 " 6M'   `Mb MM69 `MM69 `Mb MM'  `Mb MM       
-  MM     MM'     MM    MM MMMMMMM9'  MM'    MM     MM MM'   MM'   MM MM    MM MM       
+                          ________                                         
+                         `MMMMMMMb.                                        
+ /                        MM    `Mb                                          
+/M____   ___  __ ___   __ MM     MM ___  __    _____  ___  __    __  _______ /M____       
+/MMMMM  `MM 6MM `MM    MM MM     MM `MM 6MM  6MMMMMb `MM 6MMb  6MMb `M6MMMMb /MMMMM   
+  MM     MM69 "  MM    MM MM   .M9   MM69 " 6M'   `Mb MM69 `MM69 `Mb MM'  `Mb MM       
+  MM     MM'     MM    MM MMMMMMM'   MM'    MM     MM MM'   MM'   MM MM    MM MM       
   MM     MM      MM    MM MM         MM     MM     MM MM    MM    MM MM    MM MM       
   MM     MM      MM    MM MM         MM     MM     MM MM    MM    MM MM    MM MM       
   YM.  , MM      YM.   MM MM         MM     YM.   ,M9 MM    MM    MM MM.  ,M9 YM.  ,  
-   YMMM9 _MM_      YMMM9MM_MM_       _MM_     YMMMMM9 _MM_  _MM_  _MM_MMYMMM9   YMMM9  
+   YMMM9 _MM_      YMMM9MM_MM_       _MM_     YMMMMM9 _MM_  _MM_  _MM_MMYMMM9  YMMM9  
                                                                     MM                
                                                                     MM                
-                                                                   _MM_               
+ Version 7.1                                                       _MM_               
                                                                                     
 
 "{}"
@@ -449,7 +450,14 @@ RMS_CONFIG = {
         }
     },
     "OneSolutionRMS": {
-        "general_notes": ["[GUI: Workflow is Select Module -> 'Search' -> Type Query -> 'View'.]", "[Quirk: Must click 'EXIT SRCH' button to clear the form after a query.]"]
+        "general_notes": [
+            "[GUI: Workflow is Select Module -> 'Search' -> Type Query -> 'View'.]", 
+            "[Quirk: Must click 'EXIT SRCH' button to clear the form after a query.]",
+            "[GUI: Search Field Management - Always clear search fields between queries using the exit search button]",
+            "[GUI: Button states - Light gray = inactive, dark gray = active]",
+            "[GUI: Underlined letters in buttons are mapped to keyboard shortcuts for that function]",
+            "[GUI: Access RMS systems from desktop applications, not internet browsers]"
+        ]
     },
     "Tritech": {
         "general_notes": ["[GUI: Must use the web app.]", "[Workflow: To access advanced search, click the search bar and press Enter without typing.]"]
@@ -514,12 +522,9 @@ class TruPromptGenerator:
     * Vehicles: Try similar makes/models (Toyota vs Kia, Muscle Cars, etc.)
     * Addresses: "Oak Street" vs "Oak Drive" vs "Oak Ave", etc.
     * Punctuation variations: "TY'QUAN" vs "TYQUAN" vs "TY-QUAN" vs "TY'Q'UAN"
-* Search Field Management: Always clear search fields between queries using the exit search button
 * Universal GUI Navigation:
-    * Underlined letters in buttons are mapped to keyboard shortcuts for that function
-    * Button states: Light gray = inactive, dark gray = active
     * In tables, use arrow keys to navigate rather than trying to scroll
-    * Access RMS systems from desktop applications, not internet browsers
+    * Access RMS systems from desktop applications, not internet browsers (unless otherwise specified)
 * Terminal Management: Never close terminals with [TRULEO, CUA] in the title
 * Documentation: After a difficult workflow, document the correct path to get to the data in your response to improve future prompts
 * Prompt Improvement: When appropriate, recommend specific changes to the system prompt to improve efficiency:
@@ -548,16 +553,6 @@ class TruPromptGenerator:
             lines.append("\n// User-Provided Notes")
             lines.extend(user_notes)
         
-        # Add user comments and notes section
-        user_comments = self.agency_data.get('user_comments', '')
-        user_notes_text = self.agency_data.get('user_notes', '')
-        
-        if user_comments or user_notes_text:
-            lines.append("\n### 2.1. User Comments and Notes")
-            if user_comments:
-                lines.append(f"User Comments: {user_comments}")
-            if user_notes_text:
-                lines.append(f"User Notes: {user_notes_text}")
         
         # Add universal tips section
         lines.append("\n### 2.2. Universal Search and Error Handling Tips")
@@ -819,105 +814,525 @@ def generate_all_agencies(agency_data, available_agencies):
     print(f"Successfully generated: {success_count}/{len(available_agencies)} prompts")
     return True
 
-def run_setup():
-    print(f"\n{Colors.BOLD}--- Prompt Generation Setup ---{Colors.ENDC}")
+def get_tip_categories_help():
+    """Display help for tip categories with examples"""
+    print(f"\n{Colors.BLUE}--- Tip Categories Help ---{Colors.ENDC}")
+    print(f"{Colors.CYAN}Available categories with examples:{Colors.ENDC}")
+    print()
     
-    agency_data = {
-        'agency_name': input(f"{Colors.CYAN}Agency Name: {Colors.ENDC}").strip() or "Test Agency",
-        'agency_abbr': input(f"{Colors.CYAN}Agency Abbreviation: {Colors.ENDC}").strip().upper() or "TA",
-        'city': input(f"{Colors.CYAN}City: {Colors.ENDC}").strip() or "Testville",
-        'county': input(f"{Colors.CYAN}County: {Colors.ENDC}").strip() or "Test County",
-        'state': input(f"{Colors.CYAN}State: {Colors.ENDC}").strip() or "TS",
-        'os_name': input(f"{Colors.CYAN}Operating System (default: Windows): {Colors.ENDC}").strip() or "Windows"
+    categories = {
+        "Quirk": "System-specific behaviors or unusual features",
+        "Workflow": "Step-by-step procedures or processes", 
+        "Navigation": "How to move around the interface",
+        "Search": "Search techniques, tips, or limitations",
+        "Data": "Information about data fields, formats, or extraction",
+        "Error": "Common errors and how to handle them",
+        "Performance": "Speed, memory, or efficiency considerations",
+        "Security": "Access controls, permissions, or safety notes",
+        "Integration": "How this system works with other systems",
+        "Training": "Learning resources or documentation references",
+        "Other": "Any other category not listed above"
+    }
+    
+    for category, description in categories.items():
+        print(f"{Colors.GREEN}{category:12}{Colors.ENDC} - {description}")
+    
+    print(f"\n{Colors.CYAN}Examples:{Colors.ENDC}")
+    print(f"  {Colors.YELLOW}Quirk:{Colors.ENDC} Search button sometimes requires double-click")
+    print(f"  {Colors.YELLOW}Workflow:{Colors.ENDC} Always click 'Initiate' before entering data")
+    print(f"  {Colors.YELLOW}Navigation:{Colors.ENDC} Use F2 key to access command line")
+    print(f"  {Colors.YELLOW}Search:{Colors.ENDC} Partial addresses work better than full addresses")
+    print(f"  {Colors.YELLOW}Data:{Colors.ENDC} Case numbers are formatted as XX-XXXX")
+    print(f"  {Colors.YELLOW}Error:{Colors.ENDC} If login fails, check caps lock")
+    print(f"  {Colors.YELLOW}Performance:{Colors.ENDC} Close sub-windows to preserve memory")
+    print(f"  {Colors.YELLOW}Security:{Colors.ENDC} Never share credentials via email")
+    print(f"  {Colors.YELLOW}Integration:{Colors.ENDC} NCIC queries must use separate application")
+    print(f"  {Colors.YELLOW}Training:{Colors.ENDC} User manual available at help desk")
+    print(f"  {Colors.YELLOW}Other:{Colors.ENDC} Any other relevant information")
+    print()
+
+class SetupStepManager:
+    """Manages setup steps with navigation and multi-input sequences"""
+    
+    def __init__(self):
+        self.current_step = 0
+        self.steps = []
+        self.data = {}
+        self.step_data = {}  # Store data for each step
+        self.input_buffer = []  # Buffer for collecting input
+        
+    def add_step(self, step_name, step_function, step_data_key=None):
+        """Add a step to the setup process"""
+        self.steps.append({
+            'name': step_name,
+            'function': step_function,
+            'data_key': step_data_key
+        })
+    
+    def show_navigation(self):
+        """Show navigation options"""
+        print(f"\n{Colors.CYAN}Navigation: back, next, quit, help{Colors.ENDC}")
+    
+    def show_help(self):
+        """Show help for navigation"""
+        print(f"\n{Colors.BLUE}--- Setup Navigation Help ---{Colors.ENDC}")
+        print(f"{Colors.CYAN}Available commands:{Colors.ENDC}")
+        print(f"  {Colors.GREEN}back{Colors.ENDC} - Go back to previous step")
+        print(f"  {Colors.GREEN}next{Colors.ENDC} - Go to next step")
+        print(f"  {Colors.GREEN}quit{Colors.ENDC} - Exit setup without saving")
+        print(f"  {Colors.GREEN}help{Colors.ENDC} - Show this help")
+        print(f"  {Colors.GREEN}[Enter]{Colors.ENDC} - Continue with current step")
+        print()
+        print(f"{Colors.CYAN}Navigation tips:{Colors.ENDC}")
+        print(f"  • You can go back and forth between steps at any time")
+        print(f"  • Data you've entered is preserved when navigating")
+        print(f"  • Use 'back' to modify previous step data")
+        print(f"  • Use 'next' or press Enter to proceed to next step")
+        print(f"  • Use 'quit' to exit without saving")
+        print()
+    
+    def run_step(self, step_index):
+        """Run a specific step"""
+        if step_index < 0 or step_index >= len(self.steps):
+            return False
+        
+        step = self.steps[step_index]
+        print(f"\n{Colors.BOLD}--- {step['name']} ---{Colors.ENDC}")
+        
+        # Run the step function
+        result = step['function'](self.data, self.step_data.get(step_index, {}))
+        
+        # Check if step wants to navigate back
+        if result == 'NAVIGATE_BACK':
+            return 'NAVIGATE_BACK'
+        
+        # Store result if it's valid data
+        if result is not None and result != 'NAVIGATE_BACK':
+            if isinstance(result, dict):
+                self.data.update(result)
+            elif step['data_key']:
+                self.data[step['data_key']] = result
+        
+        return True
+    
+    def get_input(self, prompt):
+        """Get input from user with navigation handling"""
+        while True:
+            user_input = input(prompt).strip()
+            
+            # Check for navigation commands
+            if user_input.lower() == 'back':
+                if self.current_step > 0:
+                    self.current_step -= 1
+                    return 'NAVIGATE_BACK'
+                else:
+                    print(f"{Colors.WARNING}Already at first step.{Colors.ENDC}")
+                    continue
+            elif user_input.lower() == 'next':
+                return 'NAVIGATE_NEXT'
+            elif user_input.lower() == 'quit':
+                return 'NAVIGATE_QUIT'
+            elif user_input.lower() == 'help':
+                self.show_help()
+                continue
+            else:
+                return user_input
+
+    def run_setup(self):
+        """Run the complete setup process"""
+        while self.current_step < len(self.steps):
+            # Run current step
+            result = self.run_step(self.current_step)
+            if not result:
+                break
+            
+            # Check if step wants to navigate back
+            if result == 'NAVIGATE_BACK':
+                if self.current_step > 0:
+                    self.current_step -= 1
+                    continue
+                else:
+                    print(f"{Colors.WARNING}Already at first step.{Colors.ENDC}")
+                    continue
+            
+            # Automatically proceed to next step
+            self.current_step += 1
+        
+        return self.data
+
+def collect_categorized_notes(data, step_data):
+    """Collect user notes with category selection and step management"""
+    print(f"{Colors.CYAN}Enter notes about your RMS system, one per line.{Colors.ENDC}")
+    print(f"{Colors.CYAN}Type 'help' to see available categories and examples.{Colors.ENDC}")
+    print(f"{Colors.CYAN}Press Enter on an empty line to finish.{Colors.ENDC}")
+    print()
+    
+    user_notes = step_data.get('notes', [])
+    note_count = len(user_notes)
+    
+    while True:
+        if note_count > 0:
+            print(f"{Colors.GREEN}Current notes ({note_count}):{Colors.ENDC}")
+            for i, note in enumerate(user_notes, 1):
+                print(f"  {i}. {note}")
+            print()
+        
+        note = input("> ").strip()
+        if not note:
+            break
+        elif note.lower() == 'help':
+            get_tip_categories_help()
+            continue
+        else:
+            user_notes.append(note)
+            note_count += 1
+            print(f"{Colors.GREEN}Added note {note_count}: {note}{Colors.ENDC}")
+    
+    step_data['notes'] = user_notes
+    return {'rms_user_notes': user_notes}
+
+def show_basic_info_help():
+    """Show help for basic agency information step"""
+    print(f"\n{Colors.BLUE}--- Basic Agency Information Help ---{Colors.ENDC}")
+    print(f"{Colors.CYAN}This step collects basic information about your agency:{Colors.ENDC}")
+    print(f"  {Colors.GREEN}Agency Name:{Colors.ENDC} Full name of your agency (e.g., 'Metro Police Department')")
+    print(f"  {Colors.GREEN}Agency Abbreviation:{Colors.ENDC} Short code (e.g., 'MPD', 'BCSO')")
+    print(f"  {Colors.GREEN}City:{Colors.ENDC} City where your agency is located")
+    print(f"  {Colors.GREEN}County:{Colors.ENDC} County where your agency is located")
+    print(f"  {Colors.GREEN}State:{Colors.ENDC} State abbreviation (e.g., 'CA', 'TX', 'NY')")
+    print(f"  {Colors.GREEN}Operating System:{Colors.ENDC} Usually 'Windows' (default)")
+    print(f"\n{Colors.YELLOW}Tip: Press Enter to use default values shown in parentheses{Colors.ENDC}")
+    print()
+
+def step_basic_info(data, step_data):
+    """Step 1: Collect basic agency information"""
+    print(f"{Colors.CYAN}Enter basic agency information:{Colors.ENDC}")
+    print(f"{Colors.CYAN}Type 'help' for detailed information about each field{Colors.ENDC}")
+    print(f"{Colors.CYAN}Type 'back' to go to previous step{Colors.ENDC}")
+    
+    while True:
+        agency_name = input(f"{Colors.CYAN}Agency Name: {Colors.ENDC}").strip()
+        if agency_name.lower() == 'help':
+            show_basic_info_help()
+            continue
+        if agency_name.lower() == 'back':
+            return 'NAVIGATE_BACK'
+        agency_name = agency_name or "Test Agency"
+        break
+    
+    while True:
+        agency_abbr = input(f"{Colors.CYAN}Agency Abbreviation: {Colors.ENDC}").strip()
+        if agency_abbr.lower() == 'help':
+            show_basic_info_help()
+            continue
+        if agency_abbr.lower() == 'back':
+            return 'NAVIGATE_BACK'
+        agency_abbr = agency_abbr.upper() or "TA"
+        break
+    
+    while True:
+        city = input(f"{Colors.CYAN}City: {Colors.ENDC}").strip()
+        if city.lower() == 'help':
+            show_basic_info_help()
+            continue
+        if city.lower() == 'back':
+            return 'NAVIGATE_BACK'
+        city = city or "Testville"
+        break
+    
+    while True:
+        county = input(f"{Colors.CYAN}County: {Colors.ENDC}").strip()
+        if county.lower() == 'help':
+            show_basic_info_help()
+            continue
+        if county.lower() == 'back':
+            return 'NAVIGATE_BACK'
+        county = county or "Test County"
+        break
+    
+    while True:
+        state = input(f"{Colors.CYAN}State: {Colors.ENDC}").strip()
+        if state.lower() == 'help':
+            show_basic_info_help()
+            continue
+        if state.lower() == 'back':
+            return 'NAVIGATE_BACK'
+        state = state or "TS"
+        break
+    
+    while True:
+        os_name = input(f"{Colors.CYAN}Operating System (default: Windows): {Colors.ENDC}").strip()
+        if os_name.lower() == 'help':
+            show_basic_info_help()
+            continue
+        if os_name.lower() == 'back':
+            return 'NAVIGATE_BACK'
+        os_name = os_name or "Windows"
+        break
+    
+    return {
+        'agency_name': agency_name,
+        'agency_abbr': agency_abbr,
+        'city': city,
+        'county': county,
+        'state': state,
+        'os_name': os_name
     }
 
-    print(f"\n{Colors.BLUE}--- RMS System Selection ---{Colors.ENDC}")
-    rms_list = [rms for rms in RMS_CONFIG if rms != "Default"]
-    for i, rms in enumerate(rms_list, 1): print(f"{i}. {rms}")
+def show_rms_selection_help():
+    """Show help for RMS selection step"""
+    print(f"\n{Colors.BLUE}--- RMS Selection Help ---{Colors.ENDC}")
+    print(f"{Colors.CYAN}This step selects your Records Management System (RMS):{Colors.ENDC}")
+    print(f"  {Colors.GREEN}Pre-configured RMS:{Colors.ENDC} Select from the numbered list above")
+    print(f"  {Colors.GREEN}Custom RMS:{Colors.ENDC} Type the name of your RMS system")
+    print(f"  {Colors.GREEN}OSINT Guidance:{Colors.ENDC} Get help finding documentation for custom RMS")
+    print(f"\n{Colors.YELLOW}Tip: If your RMS isn't listed, type its name and we'll help you find documentation{Colors.ENDC}")
+    print()
+
+def step_rms_selection(data, step_data):
+    """Step 2: Select RMS system"""
+    print(f"{Colors.CYAN}Select your RMS system:{Colors.ENDC}")
+    print(f"{Colors.CYAN}Type 'help' for information about RMS selection{Colors.ENDC}")
+    print(f"{Colors.CYAN}Type 'back' to go to previous step{Colors.ENDC}")
     
-    while 'rms_name' not in agency_data:
+    rms_list = [rms for rms in RMS_CONFIG if rms != "Default"]
+    for i, rms in enumerate(rms_list, 1): 
+        print(f"{i}. {rms}")
+    
+    while True:
         try:
             choice_str = input(f"{Colors.CYAN}Select RMS or type a new name: {Colors.ENDC}").strip()
-            if not choice_str: continue
+            if not choice_str: 
+                continue
+            
+            if choice_str.lower() == 'help':
+                show_rms_selection_help()
+                continue
+            
+            if choice_str.lower() == 'back':
+                return 'NAVIGATE_BACK'
 
             try:
                 choice = int(choice_str)
                 if 1 <= choice <= len(rms_list):
-                    agency_data['rms_name'] = rms_list[choice - 1]
+                    rms_name = rms_list[choice - 1]
+                    break
                 else:
                     print(f"{Colors.WARNING}Invalid selection.{Colors.ENDC}")
             except ValueError:
-                agency_data['rms_name'] = choice_str
+                rms_name = choice_str
                 print(f"'{choice_str}' is not in the pre-configured list.")
                 if input(f"{Colors.CYAN}Would you like guidance on finding documentation for '{choice_str}' via OSINT framework? (y/n): {Colors.ENDC}").strip().lower() == 'y':
                     print(f"{Colors.GREEN}Use the OSINT framework (https://osintframework.com/) to locate RMS-specific documentation and user guides.{Colors.ENDC}")
                     print(f"{Colors.BLUE}Navigate to the OSINT framework → Select relevant category → Look for documentation resources.{Colors.ENDC}")
-                    # Note: Search engines are prohibited per TruAssist integration requirements
+                break
 
-        except (ValueError, IndexError): print(f"{Colors.WARNING}Please enter a valid number or name.{Colors.ENDC}")
+        except (ValueError, IndexError): 
+            print(f"{Colors.WARNING}Please enter a valid number or name.{Colors.ENDC}")
+    
+    return {'rms_name': rms_name}
 
-    print(f"\n{Colors.BLUE}Enter any additional notes or quirks, one per line.{Colors.ENDC}")
-    print(f"{Colors.BLUE}Prefix with a category (e.g., 'Quirk:'). Press Enter on an empty line to finish.{Colors.ENDC}")
-    user_notes = []
+
+def show_credentials_help():
+    """Show help for credentials step"""
+    print(f"\n{Colors.BLUE}--- RMS Credentials Help ---{Colors.ENDC}")
+    print(f"{Colors.CYAN}This step collects your RMS login credentials:{Colors.ENDC}")
+    print(f"  {Colors.GREEN}RMS Username:{Colors.ENDC} Your login username for the RMS system")
+    print(f"  {Colors.GREEN}RMS Password:{Colors.ENDC} Your login password for the RMS system")
+    print(f"\n{Colors.YELLOW}Tip: These credentials will be securely stored and used in the generated prompt{Colors.ENDC}")
+    print()
+
+def step_credentials(data, step_data):
+    """Step 4: Collect credentials"""
+    print(f"{Colors.CYAN}Enter RMS credentials:{Colors.ENDC}")
+    print(f"{Colors.CYAN}Type 'help' for information about this step{Colors.ENDC}")
+    
     while True:
-        note = input("> ").strip()
-        if not note: break
-        user_notes.append(note)
-    agency_data['rms_user_notes'] = user_notes
+        rms_username = input(f"{Colors.CYAN}RMS Username: {Colors.ENDC}").strip()
+        if rms_username.lower() == 'help':
+            show_credentials_help()
+            continue
+        break
     
-    print(f"\n{Colors.BLUE}--- User Comments and Notes ---{Colors.ENDC}")
-    agency_data['user_comments'] = input(f"{Colors.CYAN}Any user comments or feedback: {Colors.ENDC}").strip()
-    agency_data['user_notes'] = input(f"{Colors.CYAN}Any additional user notes: {Colors.ENDC}").strip()
-    
-    print(f"\n{Colors.BLUE}--- Credentials ---{Colors.ENDC}")
-    agency_data['rms_username'] = input(f"{Colors.CYAN}RMS Username: {Colors.ENDC}").strip()
-    agency_data['rms_password'] = input(f"{Colors.CYAN}RMS Password: {Colors.ENDC}").strip()
-    
-    other_systems = {}
-    print(f"\n{Colors.BLUE}--- Additional System Credentials (optional) ---{Colors.ENDC}")
     while True:
-        system_name = input(f"{Colors.CYAN}Other system name (or press Enter to finish): {Colors.ENDC}").strip()
+        rms_password = input(f"{Colors.CYAN}RMS Password: {Colors.ENDC}").strip()
+        if rms_password.lower() == 'help':
+            show_credentials_help()
+            continue
+        break
+    
+    return {
+        'rms_username': rms_username,
+        'rms_password': rms_password
+    }
+
+def show_other_systems_help():
+    """Show help for other systems step"""
+    print(f"\n{Colors.BLUE}--- Other System Credentials Help ---{Colors.ENDC}")
+    print(f"{Colors.CYAN}This step collects credentials for additional systems:{Colors.ENDC}")
+    print(f"  {Colors.GREEN}System Name:{Colors.ENDC} Name of the additional system (e.g., 'NCIC', 'CAD')")
+    print(f"  {Colors.GREEN}Username:{Colors.ENDC} Login username for that system")
+    print(f"  {Colors.GREEN}Password:{Colors.ENDC} Login password for that system")
+    print(f"\n{Colors.YELLOW}Tip: This step is optional - press Enter to skip if you don't have additional systems{Colors.ENDC}")
+    print()
+
+def step_other_systems(data, step_data):
+    """Step 5: Collect other system credentials"""
+    print(f"{Colors.CYAN}Enter additional system credentials (optional):{Colors.ENDC}")
+    print(f"{Colors.CYAN}Type 'help' for information about this step{Colors.ENDC}")
+    
+    other_systems = step_data.get('systems', {})
+    system_count = len(other_systems)
+    
+    while True:
+        if system_count > 0:
+            print(f"{Colors.GREEN}Current systems ({system_count}):{Colors.ENDC}")
+            for i, (name, creds) in enumerate(other_systems.items(), 1):
+                print(f"  {i}. {name} - {creds['username']}")
+            print()
+        
+        system_name = input(f"{Colors.CYAN}System name (or press Enter to finish): {Colors.ENDC}").strip()
         if not system_name:
             break
+        
+        if system_name.lower() == 'help':
+            show_other_systems_help()
+            continue
+        
         username = input(f"  -> {system_name} Username: ").strip()
         password = input(f"  -> {system_name} Password: ").strip()
+        
         other_systems[system_name] = {'username': username, 'password': password}
-    agency_data['other_systems'] = other_systems
+        system_count += 1
+        print(f"{Colors.GREEN}Added system {system_count}: {system_name}{Colors.ENDC}")
     
-    # Ask about signature choice
-    print(f"\n{Colors.BLUE}--- Signature Configuration ---{Colors.ENDC}")
-    print(f"{Colors.CYAN}Choose signature option:{Colors.ENDC}")
-    print(f"1. Generate a new signature (recommended)")
-    print(f"2. Provide an existing signature")
+    step_data['systems'] = other_systems
+    return {'other_systems': other_systems}
+
+def show_signature_config_help():
+    """Show help for signature configuration step"""
+    print(f"\n{Colors.BLUE}--- Signature Configuration Help ---{Colors.ENDC}")
+    print(f"{Colors.CYAN}This step configures the signature for your generated prompt:{Colors.ENDC}")
+    print(f"  {Colors.GREEN}Option 1:{Colors.ENDC} Generate a new secure signature (recommended)")
+    print(f"  {Colors.GREEN}Option 2:{Colors.ENDC} Provide your own existing signature")
+    print(f"\n{Colors.YELLOW}Tip: The signature ensures authenticity and auditability of generated prompts{Colors.ENDC}")
+    print()
+
+def step_signature_config(data, step_data):
+    """Step 6: Configure signature"""
+    print(f"{Colors.CYAN}Configure signature:{Colors.ENDC}")
+    print(f"{Colors.CYAN}Type 'help' for information about this step{Colors.ENDC}")
+    print("1. Generate a new signature (recommended)")
+    print("2. Provide an existing signature")
     
-    signature_choice = input(f"{Colors.CYAN}Enter choice (1 or 2): {Colors.ENDC}").strip()
+    while True:
+        signature_choice = input(f"{Colors.CYAN}Enter choice (1 or 2): {Colors.ENDC}").strip()
+        if signature_choice.lower() == 'help':
+            show_signature_config_help()
+            continue
+        if signature_choice in ['1', '2']:
+            break
+        print(f"{Colors.WARNING}Please enter 1 or 2{Colors.ENDC}")
+    
     custom_signature = None
     
     if signature_choice == "2":
-        custom_signature = input(f"{Colors.CYAN}Enter existing signature: {Colors.ENDC}").strip()
-        if not custom_signature:
-            print(f"{Colors.WARNING}No signature provided, generating new one.{Colors.ENDC}")
-            custom_signature = None
-        else:
-            print(f"{Colors.GREEN}Using provided signature: {custom_signature[:16]}...{Colors.ENDC}")
+        while True:
+            custom_signature = input(f"{Colors.CYAN}Enter existing signature: {Colors.ENDC}").strip()
+            if custom_signature.lower() == 'help':
+                show_signature_config_help()
+                continue
+            if not custom_signature:
+                print(f"{Colors.WARNING}No signature provided, generating new one.{Colors.ENDC}")
+                custom_signature = None
+            else:
+                print(f"{Colors.GREEN}Using provided signature: {custom_signature[:16]}...{Colors.ENDC}")
+            break
     else:
         print(f"{Colors.GREEN}Will generate a new signature.{Colors.ENDC}")
+    
+    return {'custom_signature': custom_signature}
+
+def show_workflow_selection_help():
+    """Show help for workflow selection step"""
+    print(f"\n{Colors.BLUE}--- Workflow Selection Help ---{Colors.ENDC}")
+    print(f"{Colors.CYAN}This step selects additional workflows for your prompt:{Colors.ENDC}")
+    print(f"  {Colors.GREEN}Core Workflows:{Colors.ENDC} Basic workflows are included by default")
+    print(f"  {Colors.GREEN}Additional Workflows:{Colors.ENDC} Select from the numbered list")
+    print(f"  {Colors.GREEN}Selection Options:{Colors.ENDC} Enter numbers, 'all', or press Enter to skip")
+    print(f"\n{Colors.YELLOW}Tip: You can always add more workflows later by regenerating the prompt{Colors.ENDC}")
+    print()
+
+def step_workflow_selection(data, step_data):
+    """Step 7: Select additional workflows"""
+    print(f"{Colors.CYAN}Select additional workflows:{Colors.ENDC}")
+    print(f"{Colors.CYAN}Type 'help' for information about this step{Colors.ENDC}")
     
     selector = WorkflowSelector()
     additional_workflows = selector.display_workflow_menu()
 
-    print(f"\n{Colors.BOLD}Generating prompt for {agency_data['agency_name']}...{Colors.ENDC}")
+    return {'additional_workflows': additional_workflows}
+
+def run_setup():
+    """Run the complete setup process with step management"""
+    print(f"\n{Colors.BOLD}--- Prompt Generation Setup ---{Colors.ENDC}")
+    print(f"{Colors.CYAN}Welcome to the interactive setup process!{Colors.ENDC}")
+    print(f"{Colors.GREEN}[+] You can navigate back and forth between steps{Colors.ENDC}")
+    print(f"{Colors.GREEN}[+] Your data is preserved when navigating{Colors.ENDC}")
+    print(f"{Colors.GREEN}[+] Type 'help' at any time for navigation commands{Colors.ENDC}")
+    print(f"{Colors.YELLOW}[!] Use 'back' to go to previous step{Colors.ENDC}")
+    print(f"{Colors.YELLOW}[!] Use 'next' or press Enter to go to next step{Colors.ENDC}")
+    print()
     
-    generator = TruPromptGenerator(agency_data, additional_workflows, custom_signature)
-    final_prompt = generator.generate_prompt()
-
-    output_dir = "outputs"
-    os.makedirs(output_dir, exist_ok=True)
-    filename = os.path.join(output_dir, f"{agency_data['agency_abbr']}_truPrompt_v7.0.txt")
-
-    with open(filename, 'w', encoding='utf-8') as f: f.write(final_prompt)
-    print(f"\n{Colors.GREEN}SUCCESS! Prompt generated successfully.{Colors.ENDC}")
-    print(f"File saved to: {Colors.UNDERLINE}{filename}{Colors.ENDC}")
+    # Create step manager
+    manager = SetupStepManager()
+    
+    # Add all steps
+    manager.add_step("Basic Agency Information", step_basic_info, "basic_info")
+    manager.add_step("RMS System Selection", step_rms_selection, "rms_selection")
+    manager.add_step("RMS-Specific Notes and Tips", collect_categorized_notes, "rms_notes")
+    manager.add_step("RMS Credentials", step_credentials, "credentials")
+    manager.add_step("Other System Credentials", step_other_systems, "other_systems")
+    manager.add_step("Signature Configuration", step_signature_config, "signature_config")
+    manager.add_step("Workflow Selection", step_workflow_selection, "workflow_selection")
+    
+    # Run the setup
+    agency_data = manager.run_setup()
+    
+    if agency_data is None:
+        return None
+    
+    # Generate signature if not provided
+    if not agency_data.get('custom_signature'):
+        # Create a temporary generator to generate signature
+        temp_generator = TruPromptGenerator(agency_data, [], None)
+        agency_data['custom_signature'] = temp_generator.generate_secure_signature()
+    
+    # Generate the prompt
+    print(f"\n{Colors.GREEN}Generating prompt for {agency_data['agency_name']}...{Colors.ENDC}")
+    generator = TruPromptGenerator(agency_data, agency_data.get('additional_workflows', []), agency_data['custom_signature'])
+    prompt_content = generator.generate_prompt()
+    
+    # Save the prompt
+    filename = f"{agency_data['agency_abbr']}_truPrompt_v7.0.txt"
+    filepath = os.path.join("outputs", filename)
+    
+    # Ensure outputs directory exists
+    os.makedirs("outputs", exist_ok=True)
+    
+    with open(filepath, 'w', encoding='utf-8') as f:
+        f.write(prompt_content)
+    
+    print(f"{Colors.GREEN}Prompt saved to: {filepath}{Colors.ENDC}")
+    
+    # Save agency data
+    agency_data_file = os.path.join("outputs", "agency_data.json")
+    with open(agency_data_file, 'w', encoding='utf-8') as f:
+        json.dump(agency_data, f, indent=2)
+    
+    print(f"{Colors.GREEN}Agency data saved to: {agency_data_file}{Colors.ENDC}")
+    
+    return agency_data
 
 def main():
     try:
