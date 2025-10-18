@@ -34,14 +34,27 @@ class Colors:
     UNDERLINE = '\033[4m'
 
 ASCII_BANNER = """
-================================================================================
-|                                                                            |
-|                        truPrompt v7.0                                      |
-|                                                                            |
-================================================================================
-> > > Standardized Agent Prompt Generator <<<
+=======================================================================================                                                                                                         
+                                                                                     
+                          ________                                                    
+                         `MMMMMMMb.                                                  
+  /                       MM    `Mb                                            /     
+ /M     ___  __ ___   ___ MM     MM ___  __   _____  ___  __    __  __ ____   /M     
+/MMMMM  `MM 6MM `MM    MM MM     MM `MM 6MM  6MMMMMb `MM 6MMb  6MMb `M6MMMMb /MMMMM  
+ MM      MM69 "  MM    MM MM    .M9  MM69 " 6M'   `Mb MM69 `MM69 `Mb MM'  `Mb MM     
+ MM      MM'     MM    MM MMMMMMM9'  MM'    MM     MM MM'   MM'   MM MM    MM MM     
+ MM      MM      MM    MM MM         MM     MM     MM MM    MM    MM MM    MM MM     
+ MM      MM      MM    MM MM         MM     MM     MM MM    MM    MM MM    MM MM     
+ YM.  ,  MM      YM.   MM MM         MM     YM.   ,M9 MM    MM    MM MM.  ,M9 YM.  , 
+  YMMM9 _MM_      YMMM9MM_MM_       _MM_     YMMMMM9 _MM_  _MM_  _MM_MMYMMM9   YMMM9 
+                                                                     MM              
+                                                                     MM              
+                                                                    _MM_                                      
+
+ 
 "{}"
-================================================================================
+
+=======================================================================================
 """
 
 MOTIVATIONAL_QUOTES = [
@@ -770,5 +783,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
