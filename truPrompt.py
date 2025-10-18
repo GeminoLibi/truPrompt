@@ -507,6 +507,24 @@ class TruPromptGenerator:
         selector = WorkflowSelector()
         self.all_workflow_cmds = selector.basic_commands + additional_workflows
 
+    def get_universal_tips(self) -> str:
+        """Get universal search and error handling tips"""
+        return """* Search Error Recovery: If no results are found, try variations before giving up:
+    * Names: "Mark Lublank" → "Marc Leblanc", "Mark Lablanc", etc.
+    * Vehicles: Try similar makes/models (Toyota vs Kia, Muscle Cars, etc.)
+    * Addresses: "Oak Street" vs "Oak Drive" vs "Oak Ave", etc.
+    * Punctuation variations: "TY'QUAN" vs "TYQUAN" vs "TY-QUAN" vs "TY'Q'UAN"
+* Search Field Management: Always clear search fields between queries using the exit search button
+* Universal GUI Navigation:
+    * Underlined letters in buttons are mapped to keyboard shortcuts for that function
+    * Button states: Light gray = inactive, dark gray = active
+    * In tables, use arrow keys to navigate rather than trying to scroll
+    * Access RMS systems from desktop applications, not internet browsers
+* Terminal Management: Never close terminals with [TRULEO, CUA] in the title
+* Documentation: After a difficult workflow, document the correct path to get to the data in your response to improve future prompts
+* Prompt Improvement: When appropriate, recommend specific changes to the system prompt to improve efficiency:
+    * Format: "I recommend the following additions or changes to the system prompt to improve efficiency: [SUGGESTION 1: ...] [SUGGESTION 2: ...] {CHANGE 1: <old> | <new>} {CHANGE 2: <old> | <new>}" """
+
     def generate_rms_notes_section(self) -> str:
         lines = ["### 2. RMS-Specific Notes and Procedures", "// Details on the operational environment, modules, and workflows for the RMS."]
         
@@ -529,6 +547,21 @@ class TruPromptGenerator:
         if user_notes:
             lines.append("\n// User-Provided Notes")
             lines.extend(user_notes)
+        
+        # Add user comments and notes section
+        user_comments = self.agency_data.get('user_comments', '')
+        user_notes_text = self.agency_data.get('user_notes', '')
+        
+        if user_comments or user_notes_text:
+            lines.append("\n### 2.1. User Comments and Notes")
+            if user_comments:
+                lines.append(f"User Comments: {user_comments}")
+            if user_notes_text:
+                lines.append(f"User Notes: {user_notes_text}")
+        
+        # Add universal tips section
+        lines.append("\n### 2.2. Universal Search and Error Handling Tips")
+        lines.append(self.get_universal_tips())
             
         return "\n".join(lines)
 
@@ -831,6 +864,10 @@ def run_setup():
         if not note: break
         user_notes.append(note)
     agency_data['rms_user_notes'] = user_notes
+    
+    print(f"\n{Colors.BLUE}--- User Comments and Notes ---{Colors.ENDC}")
+    agency_data['user_comments'] = input(f"{Colors.CYAN}Any user comments or feedback: {Colors.ENDC}").strip()
+    agency_data['user_notes'] = input(f"{Colors.CYAN}Any additional user notes: {Colors.ENDC}").strip()
     
     print(f"\n{Colors.BLUE}--- Credentials ---{Colors.ENDC}")
     agency_data['rms_username'] = input(f"{Colors.CYAN}RMS Username: {Colors.ENDC}").strip()
