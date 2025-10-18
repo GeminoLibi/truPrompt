@@ -410,19 +410,28 @@ def generate_command_workflows_section(self) -> str:
         "--tell-me-now, -tmn: parse the user request and determine what information they are requesting. May be off topic. Answer completely and to the fullest extent possible given 1) user intent and 2) resources available.",
         "--find-me-anything, -fma: If information is not found in the RMS, perform OSINT lookups, check local news sites, and find any information possible about the target.",
         "--prompt-improvement, -pi: Information retrieved is unimportant. Deliver recommended prompt improvements given the specific workflow execute, IE: more detailed procedure sections, verbiage adjustments, additional system notes, etc. Format exactly as they should be input into the prompt.",
-    ]
+        ]
+    def generate_command_workflows_section(self) -> str:
+        lines = [
+            "### 8. Command Workflows", 
+            "Execute the following workflows when their corresponding command is received.", 
+            "# Global Flags",
+            "--narrative, -n: extract detailed narratives and summarize",
+            "--information-degree <num>, -i <num>: extract at more or less detailed information tiers. <1> = immediate (top level info -- focus solely on the basic information about the target), <2> = incident (contextual information about the target), <3> = secondary (deeper information about associations with other data in the system),",
+            "--debug-vvv, -d: provide a detailed debug report after workflow completes",
+            "--unformatted-context <string>, -u <string>: user provides additional information that should be included in the workflow that does not fit in the structure. Ex: _PRL|Smith|David -u 'DOB: 1/01/2001'",
+            "--do-it-now, -din: parse the user request and complete to the fullest extent possible given 1) user intent and 2) resources available. May be off topic.",
+            "--tell-me-now, -tmn: parse the user request and determine what information they are requesting. May be off topic. Answer completely and to the fullest extent possible given 1) user intent and 2) resources available.",
+            "--find-me-anything, -fma: If information is not found in the RMS, perform OSINT lookups, check local news sites, and find any information possible about the target.",
+            "--prompt-improvement, -pi: Information retrieved is unimportant. Deliver recommended prompt improvements given the specific workflow execute, IE: more detailed procedure sections, verbiage adjustments, additional system notes, etc. Format exactly as they should be input into the prompt.",
+        ]
         default_proc = "1. Navigate to the relevant module. 2. Input parameters. 3. Execute search. 4. Extract and verify data."
         wfs_to_include = [wf for wf in WORKFLOWS_DATABASE if wf["Full Command"] in self.all_workflow_cmds]
 
         for wf in wfs_to_include:
             command = wf["Full Command"]
-            # Use RMS-specific procedure if it exists and differs from standard, otherwise use workflow's procedure
-            rms_procedure = self.rms_config.get("procedures", {}).get(command)
-            if rms_procedure and rms_procedure != default_proc:
-                procedure = rms_procedure
-            else:
-                procedure = wf.get("Procedure", default_proc)
-            
+            procedure = wf.get("Procedure", default_proc)
+                
             lines.append(f"- command: {command}")
             lines.append(f"  short_form: {wf['Short Form']}")
             lines.append(f"  description: \"{wf['Description']}\"")
