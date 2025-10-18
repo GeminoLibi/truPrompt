@@ -1,4 +1,3 @@
-# python3 truPrompt.py
 #!/usr/bin/env python3
 import os
 import json
@@ -34,30 +33,31 @@ class Colors:
     UNDERLINE = '\033[4m'
 
 ASCII_BANNER = """
-=======================================================================================                                                                                                         
-                                                                                     
-                          ________                                                    
-                         `MMMMMMMb.                                                  
-  /                       MM    `Mb                                            /     
- /M     ___  __ ___   ___ MM     MM ___  __   _____  ___  __    __  __ ____   /M     
-/MMMMM  `MM 6MM `MM    MM MM     MM `MM 6MM  6MMMMMb `MM 6MMb  6MMb `M6MMMMb /MMMMM  
- MM      MM69 "  MM    MM MM    .M9  MM69 " 6M'   `Mb MM69 `MM69 `Mb MM'  `Mb MM     
- MM      MM'     MM    MM MMMMMMM9'  MM'    MM     MM MM'   MM'   MM MM    MM MM     
- MM      MM      MM    MM MM         MM     MM     MM MM    MM    MM MM    MM MM     
- MM      MM      MM    MM MM         MM     MM     MM MM    MM    MM MM    MM MM     
- YM.  ,  MM      YM.   MM MM         MM     YM.   ,M9 MM    MM    MM MM.  ,M9 YM.  , 
-  YMMM9 _MM_      YMMM9MM_MM_       _MM_     YMMMMM9 _MM_  _MM_  _MM_MMYMMM9   YMMM9 
-                                                                     MM              
-                                                                     MM              
-                                                                    _MM_                                      
+=======================================================================================
+                                                                                    
+                                   ________                                         
+                                  `MMMMMMMb.                                        
+ /                                 MM   `Mb                                 /       
+/M     ___  __ ___   ___ MM    MM ___  __    _____  ___  __    __  __ ____   /M       
+/MMMMM  `MM 6MM `MM    MM MM    MM `MM 6MM  6MMMMMb `MM 6MMb  6MMb `M6MMMMb /MMMMM   
+  MM     MM69 "  MM    MM MM   .M9  MM69 " 6M'   `Mb MM69 `MM69 `Mb MM'  `Mb MM       
+  MM     MM'     MM    MM MMMMMMM9'  MM'    MM     MM MM'   MM'   MM MM    MM MM       
+  MM     MM      MM    MM MM         MM     MM     MM MM    MM    MM MM    MM MM       
+  MM     MM      MM    MM MM         MM     MM     MM MM    MM    MM MM    MM MM       
+  YM.  , MM      YM.   MM MM         MM     YM.   ,M9 MM    MM    MM MM.  ,M9 YM.  ,  
+   YMMM9 _MM_      YMMM9MM_MM_       _MM_     YMMMMM9 _MM_  _MM_  _MM_MMYMMM9   YMMM9  
+                                                                    MM                
+                                                                    MM                
+                                                                   _MM_               
+                                                                                    
 
- 
 "{}"
 
 =======================================================================================
 """
 
-MOTIVATIONAL_QUOTES = [
+# --- Merged and Deduplicated Motivational Quotes ---
+MOTIVATIONAL_QUOTES = list(set([
     "The best way to predict the future is to create it. - Peter Drucker",
     "Innovation distinguishes between a leader and a follower. - Steve Jobs",
     "The only way to do great work is to love what you do. - Steve Jobs",
@@ -98,7 +98,142 @@ MOTIVATIONAL_QUOTES = [
     "A journey is not complete until the lesson is learned. - Tribal Proverb",
     "There is no fate but what we make. - Kyle Reese (The Terminator)",
     "The only true wisdom is in knowing you know nothing. - Socrates",
-]
+    "Success is not final, failure is not fatal: it is the courage to continue that counts. - Winston Churchill",
+    "Don't be afraid to give up the good to go for the great. - John D. Rockefeller",
+    "The future belongs to those who believe in the beauty of their dreams. - Eleanor Roosevelt",
+    "It is during our darkest moments that we must focus to see the light. - Aristotle",
+    "Life is what happens to you while you're busy making other plans. - John Lennon",
+    "The future depends on what you do today. - Mahatma Gandhi",
+    "Innovation is the ability to see change as an opportunity, not a threat. - Steve Jobs",
+    "Your limitation—it's only your imagination.",
+    "Push yourself, because no one else is going to do it for you.",
+    "Sometimes later becomes never. Do it now.",
+    "Great things never come from comfort zones.",
+    "Dream it. Wish it. Do it.",
+    "Success doesn't just find you. You have to go out and get it.",
+    "The harder you work for something, the greater you'll feel when you achieve it.",
+    "Dream bigger. Do bigger.",
+    "Wake up with determination. Go to bed with satisfaction.",
+    "Little things make big days.",
+    "It's going to be hard, but hard does not mean impossible.",
+    "Don't wait for opportunity. Create it.",
+    "Sometimes we're tested not to show our weaknesses, but to discover our strengths.",
+    "The key to success is to focus on goals, not obstacles.",
+    "Dream it. Believe it. Build it.",
+    "Don't be pushed around by the fears in your mind. Be led by the dreams in your heart. - Roy T. Bennett",
+    "Believe you can and you're halfway there. - Theodore Roosevelt",
+    "Don't let yesterday take up too much of today. - Will Rogers",
+    "You learn more from failure than from success. Don't let it stop you. Failure builds character. - Unknown",
+    "If you are working on something that you really care about, you don't have to be pushed. The vision pulls you. - Steve Jobs",
+    "People who are crazy enough to think they can change the world, are the ones who do. - Rob Siltanen",
+    "We may encounter many defeats but we must not be defeated. - Maya Angelou",
+    "Imagine your life is perfect in every respect; what would it look like? - Brian Tracy",
+    "We become what we think about most of the time, and that's the strangest secret. - Earl Nightingale",
+    "The only person you are destined to become is the person you decide to be. - Ralph Waldo Emerson",
+    "When you have a dream, you've got to grab it and never let go. - Carol Burnett",
+    "Nothing is impossible, the word itself says 'I'm possible'! - Audrey Hepburn",
+    "There is nothing impossible to they who will try. - Alexander the Great",
+    "The bad news is time flies. The good news is you're the pilot. - Michael Altshuler",
+    "Life has got all those twists and turns. You've got to hold on tight and off you go. - Nicole Kidman",
+    "Keep your face always toward the sunshine, and shadows will fall behind you. - Walt Whitman",
+    "Be courageous. Challenge orthodoxy. Stand up for what you believe in. When you are in your rocking chair talking to your grandchildren many years from now, be sure you have a good story to tell. - Amal Clooney",
+    "You make a choice: continue living your life feeling muddled in this abyss of self-misunderstanding, or you find your identity independent of it. You draw your own box. - Duchess Meghan",
+    "I just want you to know that if you are out there and you are being really hard on yourself right now for something that has happened ... it's normal. That is what is going to happen to you in life. No one gets through unscathed. We are all going to have a few scratches on us. Please be kind to yourselves and stand up for yourself, please. - Taylor Swift",
+    "Spread love everywhere you go. Let no one ever come to you without leaving happier. - Mother Teresa",
+    "When you reach the end of your rope, tie a knot in it and hang on. - Franklin D. Roosevelt",
+    "Always remember that you are absolutely unique. Just like everyone else. - Margaret Mead",
+    "Don't judge each day by the harvest you reap but by the seeds that you plant. - Robert Louis Stevenson",
+    "Tell me and I forget. Teach me and I remember. Involve me and I learn. - Benjamin Franklin",
+    "The best and most beautiful things in the world cannot be seen or even touched - they must be felt with the heart. - Helen Keller",
+    "Whoever is happy will make others happy too. - Anne Frank",
+    "Do not go where the path may lead, go instead where there is no path and leave a trail. - Ralph Waldo Emerson",
+    "You will face many defeats in life, but never let yourself be defeated. - Maya Angelou",
+    "In the end, it's not the years in your life that count. It's the life in your years. - Abraham Lincoln",
+    "Never let the fear of striking out keep you from playing the game. - Babe Ruth",
+    "Life is either a daring adventure or nothing at all. - Helen Keller",
+    "Many of life's failures are people who did not realize how close they were to success when they gave up. - Thomas A. Edison",
+    "I barely know what I'm doing, but I know I'm doing it. - Markus Johnson",
+    "Ask and it will be given to you; seek and you will find; knock and the door will be opened to you. - Jesus Christ",
+    "For I know the plans I have for you, declares the Lord, plans to prosper you and not to harm you, to give you hope and a future. - Jeremiah 29:11",
+    "I can do all things through Christ who strengthens me. - Philippians 4:13",
+    "The Lord is my shepherd; I shall not want. - Psalm 23:1",
+    "For God so loved the world that he gave his one and only Son, that whoever believes in him shall not perish but have eternal life. - John 3:16",
+    "Love your enemies and pray for those who persecute you. - Jesus Christ",
+    "Blessed are the peacemakers, for they will be called children of God. - Jesus Christ",
+    "Do unto others as you would have them do unto you. - Jesus Christ",
+    "The truth will set you free. - Jesus Christ",
+    "Let your light shine before others, that they may see your good deeds and glorify your Father in heaven. - Jesus Christ",
+    "Seek first the kingdom of God and his righteousness, and all these things will be given to you as well. - Jesus Christ",
+    "With God all things are possible. - Jesus Christ",
+    "I am the way, the truth, and the life. - Jesus Christ",
+    "I am looking for a man. - Diogenes",
+    "The foundation of every state is the education of its youth. - Diogenes",
+    "The sun shines into the hut of the beggar as brightly as into the palace of the king. - Diogenes",
+    "The only way to escape the corruption of the world is to live in it without being of it. - Diogenes",
+    "We have two ears and one mouth so that we can listen twice as much as we speak. - Diogenes",
+    "The art of being wise is the art of knowing what to overlook. - Diogenes",
+    "It is not that I am mad, it is only that my head is different from yours. - Diogenes",
+    "I am a citizen of the world. - Diogenes",
+    "The Force will be with you, always. - Obi-Wan Kenobi",
+    "Fear is the path to the dark side. Fear leads to anger. Anger leads to hate. Hate leads to suffering. - Yoda",
+    "A Jedi's strength flows from the Force. - Yoda",
+    "Size matters not. Look at me. Judge me by my size, do you? - Yoda",
+    "You must unlearn what you have learned. - Yoda",
+    "Wars not make one great. - Yoda",
+    "I find your lack of faith disturbing. - Darth Vader",
+    "The Force is strong with this one. - Darth Vader",
+    "I am your father. - Darth Vader",
+    "Help me, Obi-Wan Kenobi. You're my only hope. - Princess Leia",
+    "I love you. I know. - Han Solo & Princess Leia",
+    "I've got a bad feeling about this. - Various Star Wars characters",
+    "All we have to decide is what to do with the time that is given us. - Gandalf",
+    "Even the smallest person can change the course of the future. - Galadriel",
+    "Not all those who wander are lost. - J.R.R. Tolkien",
+    "There is some good in this world, and it's worth fighting for. - Samwise Gamgee",
+    "The road goes ever on and on. - Bilbo Baggins",
+    "I will not say: do not weep; for not all tears are an evil. - Gandalf",
+    "Despair is only for those who see the end beyond all doubt. - Gandalf",
+    "Even darkness must pass. A new day will come. - Samwise Gamgee",
+    "The world is indeed full of peril, and in it there are many dark places; but still there is much that is fair. - Gandalf",
+    "It's a dangerous business, Frodo, going out your door. - Bilbo Baggins",
+    "I am no man! - Eowyn",
+    "You shall not pass! - Gandalf",
+    "My precious. - Gollum",
+    "One does not simply walk into Mordor. - Boromir",
+    "Happiness can be found, even in the darkest of times, if one only remembers to turn on the light. - Albus Dumbledore",
+    "It does not do to dwell on dreams and forget to live. - Albus Dumbledore",
+    "Words are, in my not-so-humble opinion, our most inexhaustible source of magic. - Albus Dumbledore",
+    "The truth is a beautiful and terrible thing, and should therefore be treated with great caution. - Albus Dumbledore",
+    "It takes a great deal of bravery to stand up to our enemies, but just as much to stand up to our friends. - Albus Dumbledore",
+    "We are only as strong as we are united, as weak as we are divided. - Albus Dumbledore",
+    "It is the unknown we fear when we look upon death and darkness, nothing more. - Albus Dumbledore",
+    "Numbing the pain for a while will make it worse when you finally feel it. - Albus Dumbledore",
+    "The best of us must sometimes eat our words. - Albus Dumbledore",
+    "I am not worried, Harry. I am with you. - Albus Dumbledore",
+    "Help will always be given at Hogwarts to those who ask for it. - Albus Dumbledore",
+    "It is important to fight and fight again, and keep fighting, for only then can evil be kept at bay. - Albus Dumbledore",
+    "The consequences of our actions are always so complicated, so diverse, that predicting the future is a very difficult business indeed. - Albus Dumbledore",
+    "I am Iron Man. - Tony Stark",
+    "I'm always angry. - Bruce Banner",
+    "I am Groot. - Groot",
+    "I have a plan. - Rocket Raccoon",
+    "I am inevitable. - Thanos",
+    "The night is darkest just before the dawn. - Harvey Dent",
+    "To be or not to be, that is the question. - Hamlet",
+    "All the world's a stage, and all the men and women merely players. - William Shakespeare",
+    "The course of true love never did run smooth. - William Shakespeare",
+    "Cowards die many times before their deaths; the valiant never taste of death but once. - William Shakespeare",
+    "We know what we are, but know not what we may be. - William Shakespeare",
+    "The fault, dear Brutus, is not in our stars, but in ourselves. - William Shakespeare",
+    "What light through yonder window breaks? - William Shakespeare",
+    "A rose by any other name would smell as sweet. - William Shakespeare",
+    "The lady doth protest too much, methinks. - William Shakespeare",
+    "Something is rotten in the state of Denmark. - William Shakespeare",
+    "The play's the thing. - William Shakespeare",
+    "There are more things in heaven and earth, Horatio, than are dreamt of in your philosophy. - William Shakespeare",
+    "The rest is silence. - William Shakespeare"
+]))
+
 
 def display_banner():
     quote = random.choice(MOTIVATIONAL_QUOTES)
@@ -225,7 +360,7 @@ WORKFLOWS_DATABASE = [
     {"Full Command": "_ADDRESS_WEAPONS|$ADDRESS:", "Short Form": "_AW", "Description": "Find weapon information associated with an address.", "Procedure": "1. Navigate to the relevant module. 2. Input parameters. 3. Execute search. 4. Extract and verify data."},
     {"Full Command": "_ADDRESS_HAZARDS|$ADDRESS:", "Short Form": "_AH", "Description": "Find premise hazards or officer safety notes for an address.", "Procedure": "1. Navigate to the relevant module. 2. Input parameters. 3. Execute search. 4. Extract and verify data."},
     {"Full Command": "_OSINT_LOOKUP|$LN|$FN|$phone|$address|$company|$email|$domain|$IP|$product|$username|$id_num:", "Short Form": "_OL", "Description": "Perform a comprehensive OSINT search for various data types.", "Procedure": "1. Navigate to the relevant module. 2. Input parameters. 3. Execute search. 4. Extract and verify data.", "Flags": "--associates [1, 2, 3] (Also look for associates at various informational depths. Default: 1)"},
-    {"Full Command": "_DIAGNOSTIC_INPUT_CHECK|$mode:", "Short Form": "_DIC", "Description": "Verify keyboard and mouse input mappings.", "Procedure": "1. Navigate to the relevant module. 2. Input parameters. 3. Execute search. 4. Extract and verify data.", "Modes": "full (test all possible inputs), standard (lmb, rmb, mmb, return, escape, shift, caps lock, tab, alt, super, del, backspace, home, pgup, pgdn, end, ins, home, num lock, [a-z] [0-9] [-   [];',./\\`]), typing ([a-z] [0-9] [-[];',./\\`]), system (lmb, rmb, mmb, return, escape, shift, caps lock, tab, alt, super, del, backspace, home, pgup, pgdn, end, ins, home, num lock), mouse (lmb, rmb, mmb, mouse_move, scroll)"},
+    {"Full Command": "_DIAGNOSTIC_INPUT_CHECK|$mode:", "Short Form": "_DIC", "Description": "Verify keyboard and mouse input mappings.", "Procedure": "1. Navigate to the relevant module. 2. Input parameters. 3. Execute search. 4. Extract and verify data.", "Modes": "full (test all possible inputs), standard (lmb, rmb, mmb, return, escape, shift, caps lock, tab, alt, super, del, backspace, home, pgup, pgdn, end, ins, home, num lock, [a-z] [0-9] [-=[];',./\\]), typing ([a-z] [0-9] [-=[];',./\\]), system (lmb, rmb, mmb, return, escape, shift, caps lock, tab, alt, super, del, backspace, home, pgup, pgdn, end, ins, home, num lock), mouse (lmb, rmb, mmb, mouse_move, scroll)"},
     {"Full Command": "_EXPLORE_RMS:", "Short Form": "_ER", "Description": "Heuristically explore an unknown RMS GUI.", "Procedure": "1. Navigate to the relevant module. 2. Input parameters. 3. Execute search. 4. Extract and verify data."},
     {"Full Command": "_BATCH|$CMD1;$CMD2;$CMD3:", "Short Form": "_BATCH", "Description": "Execute multiple commands sequentially.", "Procedure": "1. Navigate to the relevant module. 2. Input parameters. 3. Execute search. 4. Extract and verify data."}
 ]
@@ -397,20 +532,6 @@ class TruPromptGenerator:
             
         return "\n".join(lines)
 
-def generate_command_workflows_section(self) -> str:
-    lines = [
-        "### 8. Command Workflows", 
-        "Execute the following workflows when their corresponding command is received.", 
-        "# Global Flags",
-        "--narrative, -n: extract detailed narratives and summarize",
-        "--information-degree <num>, -i <num>: extract at more or less detailed information tiers. <1> = immediate (top level info -- focus solely on the basic information about the target), <2> = incident (contextual information about the target), <3> = secondary (deeper information about associations with other data in the system),",
-        "--debug-vvv, -d: provide a detailed debug report after workflow completes",
-        "--unformatted-context <string>, -u <string>: user provides additional information that should be included in the workflow that does not fit in the structure. Ex: _PRL|Smith|David -u 'DOB: 1/01/2001'",
-        "--do-it-now, -din: parse the user request and complete to the fullest extent possible given 1) user intent and 2) resources available. May be off topic.",
-        "--tell-me-now, -tmn: parse the user request and determine what information they are requesting. May be off topic. Answer completely and to the fullest extent possible given 1) user intent and 2) resources available.",
-        "--find-me-anything, -fma: If information is not found in the RMS, perform OSINT lookups, check local news sites, and find any information possible about the target.",
-        "--prompt-improvement, -pi: Information retrieved is unimportant. Deliver recommended prompt improvements given the specific workflow execute, IE: more detailed procedure sections, verbiage adjustments, additional system notes, etc. Format exactly as they should be input into the prompt.",
-        ]
     def generate_command_workflows_section(self) -> str:
         lines = [
             "### 8. Command Workflows", 
@@ -425,13 +546,15 @@ def generate_command_workflows_section(self) -> str:
             "--find-me-anything, -fma: If information is not found in the RMS, perform OSINT lookups, check local news sites, and find any information possible about the target.",
             "--prompt-improvement, -pi: Information retrieved is unimportant. Deliver recommended prompt improvements given the specific workflow execute, IE: more detailed procedure sections, verbiage adjustments, additional system notes, etc. Format exactly as they should be input into the prompt.",
         ]
+        
         default_proc = "1. Navigate to the relevant module. 2. Input parameters. 3. Execute search. 4. Extract and verify data."
         wfs_to_include = [wf for wf in WORKFLOWS_DATABASE if wf["Full Command"] in self.all_workflow_cmds]
 
         for wf in wfs_to_include:
             command = wf["Full Command"]
-            procedure = wf.get("Procedure", default_proc)
-                
+            # Prioritize RMS-specific procedure first, then DB procedure, then default
+            procedure = self.rms_config.get("procedures", {}).get(command, wf.get("Procedure", default_proc))
+            
             lines.append(f"- command: {command}")
             lines.append(f"  short_form: {wf['Short Form']}")
             lines.append(f"  description: \"{wf['Description']}\"")
@@ -792,6 +915,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
-
