@@ -23,7 +23,7 @@ from typing import Dict, List, Optional
 # --- Configuration ---
 OUTPUTS_DIR = "outputs"
 LOG_FILE = "agency_extraction_log.txt"
-AGENCY_DATA_FILE = "agency_data.json"
+AGENCY_DATA_FILE = "outputs/agency_data.json"
 
 # --- Logging Class ---
 class Logger:
@@ -136,7 +136,17 @@ class AgencyDataManager:
         try:
             if os.path.exists(self.agency_data_file):
                 with open(self.agency_data_file, 'r', encoding='utf-8') as f:
-                    return json.load(f)
+                    data = json.load(f)
+                    # Check if the loaded data has the expected structure
+                    if 'processed_files' not in data or 'agencies' not in data:
+                        self.logger.log_error(f"Invalid data structure in {self.agency_data_file}. Expected 'processed_files' and 'agencies' keys.")
+                        # Return default structure
+                        return {
+                            'processed_files': {},
+                            'agencies': {},
+                            'last_updated': None
+                        }
+                    return data
             return {
                 'processed_files': {},
                 'agencies': {},
@@ -153,6 +163,9 @@ class AgencyDataManager:
     def save_data(self) -> None:
         """Save the agency data and processed files"""
         try:
+            # Ensure outputs directory exists
+            os.makedirs(os.path.dirname(self.agency_data_file), exist_ok=True)
+            
             self.data['last_updated'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
             with open(self.agency_data_file, 'w', encoding='utf-8') as f:
                 json.dump(self.data, f, indent=2)
